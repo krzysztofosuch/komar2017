@@ -5,7 +5,7 @@ from characters.Mosquito import Mosquito
 from level import Level
 # GLOBALS
 W_WIDTH = 1024
-W_HEIGHT = 1024
+W_HEIGHT = 600
 
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
@@ -55,11 +55,12 @@ initApp()
 pygame.joystick.init()
 joystick = pygame.joystick.Joystick(0)
 
+level = Level(bgImage, screen, (mosquito.x, mosquito.y))
+
 while appAlive:
     screen.fill(BLACK)
 
     time = clock.get_time()*TIME_MODIFIER
-    level = Level(bgImage, screen)
 
 #    print("Frame time: %s"%time)
     for event in pygame.event.get():
@@ -86,7 +87,7 @@ while appAlive:
             mosquito.acc_y = 0
         
     mosquito.updateForTime(time)
-    level.update(-mosquito.x, -mosquito.y)
+    level.update(-mosquito.acc_x, -mosquito.acc_y)
     level.draw()
     screen.blit(mosquito.image, (W_WIDTH/2,W_HEIGHT/2))
     #InfoText = fontTahoma.render("DBG: Y: " + str(yOffset) + " X: " + str(xOffset), True, BLACK)
