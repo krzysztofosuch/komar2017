@@ -2,6 +2,7 @@
 
 import pygame, time
 from characters.Mosquito import Mosquito
+from level import Level
 # GLOBALS
 W_WIDTH = 640
 W_HEIGHT = 480
@@ -59,8 +60,10 @@ TIME_MODIFIER = 0.2
 initApp()
 while appAlive:
     screen.fill(BLACK)
-    screen.blit(bgImage, (0,0))
+
     time = clock.get_time()*TIME_MODIFIER
+    level = Level(bgImage, screen)
+
 #    print("Frame time: %s"%time)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -86,7 +89,9 @@ while appAlive:
             mosquito.acc_y = 0
         
     mosquito.updateForTime(time)
-    screen.blit(mosquito.image, (mosquito.x,mosquito.y))
+    level.update(-mosquito.x, -mosquito.y)
+    level.draw()
+    screen.blit(mosquito.image, (W_WIDTH/2,W_HEIGHT/2))
     #InfoText = fontTahoma.render("DBG: Y: " + str(yOffset) + " X: " + str(xOffset), True, BLACK)
     # screen.blit(InfoText, [W_WIDTH - 132, W_HEIGHT - 30])
     
