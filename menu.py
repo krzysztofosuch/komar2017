@@ -1,29 +1,63 @@
 import pygame
-from pygame.math import Vector2
+from game import Game
 
 
 class Menu:
-    def __init__(self, screen):
-        self.screen = screen
-        width = screen.get_rect().width
+    ITEM_START = 'Start Game'
+    ITEM_EXIT = 'Exit'
+
+    def __init__(self, game):
+        self.game = game
+        self.current = 0
+        width = game.screen.get_rect().width
         font = pygame.font.SysFont('Tahoma', 14)
 
         self.items = []
-        position_width = width / 2
+        half_width = width / 2
         position_height = 100
 
-        for label in ['Start Game', 'Exit']:
-            rendered = font.render(label, 1, (255, 255, 255))
-            vector = Vector2(position_width, position_height)
-            self.items.append(MenuItem(vector, rendered))
+        for name in [Menu.ITEM_START, Menu.ITEM_EXIT]:
+            rendered = font.render(name, 1, (255, 255, 255))
+            position_width = half_width - (rendered.get_width() / 2)
+            vector = (position_width, position_height)
+            self.items.append(MenuItem(name, vector, rendered))
             position_height += 100
 
     def render(self):
         for item in self.items:
-            self.screen.blit(item.render, item.vector)
+            self.game.screen.blit(item.rendered, item.vector)
+
+        height = (self.current + 1) * 100
+        height += 20
+        item = self.items[self.current]
+        vector_start = (item.vector[0], height)
+        vector_end = (item.vector[0] + item.rendered.get_width(), height)
+        pygame.draw.line(self.game.screen, (255, 255, 255), vector_start, vector_end, 1)
+
+    def key_pressed(self, key_pressed):
+        item = self.items[self.current]
+
+        if key_pressed[pygame.K_UP]:
+            self.current -= 1
+
+        if key_pressed[pygame.K_DOWN]:
+            self.current += 1
+
+        if key_pressed[pygame.K_RETURN]:
+            if Menu.ITEM_START == item.name:
+                self.game.scene = Game.SCENE_GAME
+            if Menu.ITEM_EXIT == item.name:
+                self.game.alive = False
+
+        if self.current < 0:
+            self.current = len(self.items) - 1
+
+        if self.current > len(self.items) - 1:
+            self.current = 0
 
 
 class MenuItem:
-    def __init__(self, vector, rendered):
+    def __init__(self, name, vector, rendered):
+        self.name = name
         self.vector = vector
         self.rendered = rendered

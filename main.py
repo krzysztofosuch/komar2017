@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
-import pygame, time
+import pygame
 from characters.Mosquito import Mosquito
 from level import Level
+from menu import Menu
+from game import Game
+
 # GLOBALS
 W_WIDTH = 1024
 W_HEIGHT = 1024
@@ -19,7 +22,6 @@ mainFont = 0
 fontTahoma = 0
 xOffset = 0
 yOffset = 0
-appAlive = False
 mosquito = Mosquito()
 mosquito.x = 100
 mosquito.y = 100
@@ -39,32 +41,38 @@ def initApp():
     bgImage = pygame.image.load("resources/gfx/background.png").convert()
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     screen.fill(BLACK)
-    screen.blit(bgImage, (0,0))
+    screen.blit(bgImage, (0, 0))
     pygame.display.flip()
-    appAlive = True
+
 
 keys_pressed = {
-    pygame.K_RIGHT: False, 
-    pygame.K_LEFT: False, 
-    pygame.K_UP: False, 
-    pygame.K_DOWN: False, 
+    pygame.K_RIGHT: False,
+    pygame.K_LEFT: False,
+    pygame.K_UP: False,
+    pygame.K_DOWN: False,
+    pygame.K_RETURN: False
 }
 TIME_MODIFIER = 0.2
 
 initApp()
-#pygame.joystick.init()
-#joystick = pygame.joystick.Joystick(0)
 
-while appAlive:
+
+# pygame.joystick.init()
+# joystick = pygame.joystick.Joystick(0)
+
+game = Game(screen)
+menu = Menu(game)
+
+while game.enabled:
     screen.fill(BLACK)
 
-    time = clock.get_time()*TIME_MODIFIER
+    time = clock.get_time() * TIME_MODIFIER
     level = Level(bgImage, screen)
 
-#    print("Frame time: %s"%time)
+    #    print("Frame time: %s"%time)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            appAlive = False
+            game.enabled = False
         elif event.type == pygame.KEYDOWN:
             if event.key in keys_pressed:
                 keys_pressed[event.key] = True
@@ -85,14 +93,18 @@ while appAlive:
         mosquito.acc_y = 1
     else:
         mosquito.acc_y = 0
-        
-    mosquito.updateForTime(time)
-    level.update(-mosquito.x, -mosquito.y)
-    level.draw()
-    screen.blit(mosquito.image, (W_WIDTH/2,W_HEIGHT/2))
-    #InfoText = fontTahoma.render("DBG: Y: " + str(yOffset) + " X: " + str(xOffset), True, BLACK)
+
+    if game.scene == Game.SCENE_MENU:
+        menu.key_pressed(keys_pressed)
+        menu.render()
+    else:
+        mosquito.updateForTime(time)
+        level.update(-mosquito.x, -mosquito.y)
+        level.draw()
+        screen.blit(mosquito.image, (W_WIDTH / 2, W_HEIGHT / 2))
+    # InfoText = fontTahoma.render("DBG: Y: " + str(yOffset) + " X: " + str(xOffset), True, BLACK)
     # screen.blit(InfoText, [W_WIDTH - 132, W_HEIGHT - 30])
-    
+
     pygame.display.flip()
     clock.tick(60)
 
