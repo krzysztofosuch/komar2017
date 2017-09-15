@@ -71,12 +71,13 @@ while appAlive:
         elif event.type == pygame.KEYUP:
             if event.key in keys_pressed:
                 keys_pressed[event.key] = False
-        if keys_pressed[pygame.K_RIGHT]:
-            mosquito.acc_x = 1
-        elif keys_pressed[pygame.K_LEFT]:
-            mosquito.acc_x = -1
-        else:
-            mosquito.acc_x = 0
+
+    if keys_pressed[pygame.K_RIGHT]:
+        mosquito.acc_x = 1
+    elif keys_pressed[pygame.K_LEFT]:
+        mosquito.acc_x = -1
+    else:
+        mosquito.acc_x = 0
 
     if keys_pressed[pygame.K_UP]:
         mosquito.acc_y = -1
