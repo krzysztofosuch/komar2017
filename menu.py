@@ -1,6 +1,7 @@
 import pygame
 from game import Game
 
+
 class Menu:
     ITEM_START = 'Start Game'
     ITEM_EXIT = 'Exit'
