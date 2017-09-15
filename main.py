@@ -57,9 +57,12 @@ TIME_MODIFIER = 0.2
 initApp()
 
 
-# pygame.joystick.init()
-# joystick = pygame.joystick.Joystick(0)
-
+pygame.joystick.init()
+if pygame.joystick.get_count():
+    joystick = pygame.joystick.Joystick(0)
+    joystick.init()
+else:
+    joystick = None
 game = Game(screen)
 menu = Menu(game)
 
@@ -79,6 +82,12 @@ while game.enabled:
         elif event.type == pygame.KEYUP:
             if event.key in keys_pressed:
                 keys_pressed[event.key] = False
+    if joystick:
+        print("X: %s, Y: %s"%(joystick.get_axis(0), joystick.get_axis(1)))
+        keys_pressed[pygame.K_RIGHT] = joystick.get_axis(0) > 0.5
+        keys_pressed[pygame.K_LEFT] =joystick.get_axis(0) < -0.5
+        keys_pressed[pygame.K_DOWN] = joystick.get_axis(1) > 0.5
+        keys_pressed[pygame.K_UP] =joystick.get_axis(1) < -0.5
 
     if keys_pressed[pygame.K_RIGHT]:
         mosquito.acc_x = 1
