@@ -52,8 +52,8 @@ keys_pressed = {
 TIME_MODIFIER = 0.2
 
 initApp()
-pygame.joystick.init()
-joystick = pygame.joystick.Joystick(0)
+#pygame.joystick.init()
+#joystick = pygame.joystick.Joystick(0)
 
 while appAlive:
     screen.fill(BLACK)
@@ -78,12 +78,12 @@ while appAlive:
         else:
             mosquito.acc_x = 0
 
-        if keys_pressed[pygame.K_UP]:
-            mosquito.acc_y = -1
-        elif keys_pressed[pygame.K_DOWN]:
-            mosquito.acc_y = 1
-        else:
-            mosquito.acc_y = 0
+    if keys_pressed[pygame.K_UP]:
+        mosquito.acc_y = -1
+    elif keys_pressed[pygame.K_DOWN]:
+        mosquito.acc_y = 1
+    else:
+        mosquito.acc_y = 0
         
     mosquito.updateForTime(time)
     level.update(-mosquito.x, -mosquito.y)
@@ -93,6 +93,6 @@ while appAlive:
     # screen.blit(InfoText, [W_WIDTH - 132, W_HEIGHT - 30])
     
     pygame.display.flip()
-    clock.tick()
+    clock.tick(60)
 
 pygame.quit()
