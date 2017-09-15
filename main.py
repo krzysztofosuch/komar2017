@@ -29,12 +29,9 @@ bgImage = 0
 def initApp():
     """Initialize app"""
     global screen, appAlive, clock, mainFont, bgImage, fontTahoma
-
     pygame.init()
     pygame.display.set_caption("Blood Frenzy")
-
     fontTahoma = pygame.font.SysFont('Tahoma', 16, False, False)
-
     clock = pygame.time.Clock()
     mainFont = pygame.font.SysFont('Tahoma', 16, False, False)
     size = (W_WIDTH, W_HEIGHT)
@@ -46,9 +43,6 @@ def initApp():
     pygame.display.flip()
     appAlive = True
 
-colors = [BLACK, WHITE, RED, GREEN, BLUE]
-colorLength = len(colors)
-colorIndex = 0
 keys_pressed = {
     pygame.K_RIGHT: False, 
     pygame.K_LEFT: False, 
@@ -58,6 +52,9 @@ keys_pressed = {
 TIME_MODIFIER = 0.2
 
 initApp()
+pygame.joystick.init()
+joystick = pygame.joystick.Joystick(0)
+
 while appAlive:
     screen.fill(BLACK)
 
