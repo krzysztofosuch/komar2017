@@ -5,7 +5,7 @@ from characters.Mosquito import Mosquito
 from level import Level
 from menu import Menu
 from game import Game
-
+import sys
 # GLOBALS
 W_WIDTH = 1024
 W_HEIGHT = 1024
@@ -59,7 +59,7 @@ TIME_MODIFIER = 0.2
 initApp()
 
 pygame.joystick.init()
-if pygame.joystick.get_count():
+if pygame.joystick.get_count() and not 'no-joystick' in sys.argv:
     joystick = pygame.joystick.Joystick(0)
     joystick.init()
 else:
