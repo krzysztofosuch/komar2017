@@ -3,8 +3,8 @@
 import pygame, time
 from characters.Mosquito import Mosquito
 # GLOBALS
-W_WIDTH = 640
-W_HEIGHT = 480
+W_WIDTH = 1024
+W_HEIGHT = 1024
 
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
@@ -39,7 +39,7 @@ def initApp():
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
     bgImage = pygame.image.load("resources/gfx/background.png").convert()
-    mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert()
+    mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     screen.fill(BLACK)
     screen.blit(bgImage, (0,0))
     pygame.display.flip()
