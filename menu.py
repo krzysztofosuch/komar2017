@@ -1,7 +1,6 @@
 import pygame
 from game import Game
 
-
 class Menu:
     ITEM_START = 'Start Game'
     ITEM_EXIT = 'Exit'
@@ -34,16 +33,16 @@ class Menu:
         vector_end = (item.vector[0] + item.rendered.get_width(), height)
         pygame.draw.line(self.game.screen, (255, 255, 255), vector_start, vector_end, 1)
 
-    def key_pressed(self, key_pressed):
+    def handle_keys(self, keys):
         item = self.items[self.current]
 
-        if key_pressed[pygame.K_UP]:
+        if keys[pygame.K_UP]:
             self.current -= 1
 
-        if key_pressed[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN]:
             self.current += 1
 
-        if key_pressed[pygame.K_RETURN]:
+        if keys[pygame.K_RETURN]:
             if Menu.ITEM_START == item.name:
                 self.game.scene = Game.SCENE_GAME
             if Menu.ITEM_EXIT == item.name:
