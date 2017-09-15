@@ -8,7 +8,7 @@ from game import Game
 import sys
 # GLOBALS
 W_WIDTH = 1024
-W_HEIGHT = 1024
+W_HEIGHT = 600
 
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
@@ -67,11 +67,11 @@ else:
 game = Game(screen)
 menu = Menu(game)
 
+level = Level(bgImage, screen, (mosquito.x, mosquito.y))
 while game.enabled:
     screen.fill(BLACK)
 
     time = clock.get_time() * TIME_MODIFIER
-    level = Level(bgImage, screen)
     keys_down = create_key_set()
 
     #    print("Frame time: %s"%time)
@@ -111,11 +111,9 @@ while game.enabled:
         else:
             mosquito.acc_y = 0
         mosquito.updateForTime(time)
-        level.update(-mosquito.x, -mosquito.y)
+        level.update(-mosquito.acc_x, -mosquito.acc_y)
         level.draw()
         screen.blit(mosquito.image, (W_WIDTH / 2, W_HEIGHT / 2))
-    # InfoText = fontTahoma.render("DBG: Y: " + str(yOffset) + " X: " + str(xOffset), True, BLACK)
-    # screen.blit(InfoText, [W_WIDTH - 132, W_HEIGHT - 30])
 
     pygame.display.flip()
     clock.tick(60)
