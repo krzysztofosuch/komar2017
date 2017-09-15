@@ -15,6 +15,7 @@ BLACK = (0, 0, 0)
 screen = 0
 clock = 0
 mainFont = 0
+fontTahoma = 0
 xOffset = 0
 yOffset = 0
 appAlive = False
@@ -26,17 +27,20 @@ bgImage = 0
 
 def initApp():
     """Initialize app"""
-    global screen, appAlive, clock, mainFont, bgImage
+    global screen, appAlive, clock, mainFont, bgImage, fontTahoma
 
     pygame.init()
-    pygame.display.set_caption("Graphic enabled!")
+    pygame.display.set_caption("Blood Frenzy")
+
+    fontTahoma = pygame.font.SysFont('Tahoma', 16, False, False)
+
     clock = pygame.time.Clock()
     mainFont = pygame.font.SysFont('Tahoma', 16, False, False)
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
-#    bgImage = pygame.image.load("resources/background.jpg").convert()
+    bgImage = pygame.image.load("resources/gfx/background.png").convert()
     screen.fill(BLACK)
-#    screen.blit(bgImage)
+    screen.blit(bgImage, (0,0))
     pygame.display.flip()
     appAlive = True
 
