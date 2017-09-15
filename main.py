@@ -87,30 +87,28 @@ while game.enabled:
             if event.key in keys_pressed:
                 keys_pressed[event.key] = False
     if joystick:
-        print("X: %s, Y: %s"%(joystick.get_axis(0), joystick.get_axis(1)))
         keys_pressed[pygame.K_RIGHT] = joystick.get_axis(0) > 0.5
         keys_pressed[pygame.K_LEFT] =joystick.get_axis(0) < -0.5
         keys_pressed[pygame.K_DOWN] = joystick.get_axis(1) > 0.5
         keys_pressed[pygame.K_UP] =joystick.get_axis(1) < -0.5
 
-    if keys_pressed[pygame.K_RIGHT]:
-        mosquito.acc_x = 1
-    elif keys_pressed[pygame.K_LEFT]:
-        mosquito.acc_x = -1
-    else:
-        mosquito.acc_x = 0
-
-    if keys_pressed[pygame.K_UP]:
-        mosquito.acc_y = -1
-    elif keys_pressed[pygame.K_DOWN]:
-        mosquito.acc_y = 1
-    else:
-        mosquito.acc_y = 0
-
     if game.scene == Game.SCENE_MENU:
         menu.handle_keys(keys_down)
         menu.render()
     else:
+        if keys_pressed[pygame.K_RIGHT]:
+            mosquito.acc_x = 1
+        elif keys_pressed[pygame.K_LEFT]:
+            mosquito.acc_x = -1
+        else:
+            mosquito.acc_x = 0
+
+        if keys_pressed[pygame.K_UP]:
+            mosquito.acc_y = -1
+        elif keys_pressed[pygame.K_DOWN]:
+            mosquito.acc_y = 1
+        else:
+            mosquito.acc_y = 0
         mosquito.updateForTime(time)
         level.update(-mosquito.x, -mosquito.y)
         level.draw()
