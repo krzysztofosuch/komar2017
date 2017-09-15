@@ -47,7 +47,7 @@ class Menu:
             if Menu.ITEM_START == item.name:
                 self.game.scene = Game.SCENE_GAME
             if Menu.ITEM_EXIT == item.name:
-                self.game.alive = False
+                self.game.enabled = False
 
         if self.current < 0:
             self.current = len(self.items) - 1
