@@ -45,17 +45,18 @@ def initApp():
     pygame.display.flip()
 
 
-keys_pressed = {
-    pygame.K_RIGHT: False,
-    pygame.K_LEFT: False,
-    pygame.K_UP: False,
-    pygame.K_DOWN: False,
-    pygame.K_RETURN: False
-}
+def create_key_set():
+    return {
+        pygame.K_RIGHT: False,
+        pygame.K_LEFT: False,
+        pygame.K_UP: False,
+        pygame.K_DOWN: False,
+        pygame.K_RETURN: False
+    }
+
+keys_pressed = create_key_set()
 TIME_MODIFIER = 0.2
-
 initApp()
-
 
 pygame.joystick.init()
 if pygame.joystick.get_count():
@@ -71,6 +72,7 @@ while game.enabled:
 
     time = clock.get_time() * TIME_MODIFIER
     level = Level(bgImage, screen)
+    keys_down = create_key_set()
 
     #    print("Frame time: %s"%time)
     for event in pygame.event.get():
@@ -78,6 +80,7 @@ while game.enabled:
             game.enabled = False
         elif event.type == pygame.KEYDOWN:
             if event.key in keys_pressed:
+                keys_down[event.key] = True
                 keys_pressed[event.key] = True
         elif event.type == pygame.KEYUP:
             if event.key in keys_pressed:
@@ -104,7 +107,7 @@ while game.enabled:
         mosquito.acc_y = 0
 
     if game.scene == Game.SCENE_MENU:
-        menu.key_pressed(keys_pressed)
+        menu.handle_keys(keys_down)
         menu.render()
     else:
         mosquito.updateForTime(time)
