@@ -2,9 +2,10 @@
 
 import pygame, time
 from characters.Mosquito import Mosquito
+from level import Level
 # GLOBALS
-W_WIDTH = 640
-W_HEIGHT = 480
+W_WIDTH = 1024
+W_HEIGHT = 1024
 
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
@@ -28,26 +29,20 @@ bgImage = 0
 def initApp():
     """Initialize app"""
     global screen, appAlive, clock, mainFont, bgImage, fontTahoma
-
     pygame.init()
     pygame.display.set_caption("Blood Frenzy")
-
     fontTahoma = pygame.font.SysFont('Tahoma', 16, False, False)
-
     clock = pygame.time.Clock()
     mainFont = pygame.font.SysFont('Tahoma', 16, False, False)
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
     bgImage = pygame.image.load("resources/gfx/background.png").convert()
-    mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert()
+    mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     screen.fill(BLACK)
     screen.blit(bgImage, (0,0))
     pygame.display.flip()
     appAlive = True
 
-colors = [BLACK, WHITE, RED, GREEN, BLUE]
-colorLength = len(colors)
-colorIndex = 0
 keys_pressed = {
     pygame.K_RIGHT: False, 
     pygame.K_LEFT: False, 
@@ -57,10 +52,15 @@ keys_pressed = {
 TIME_MODIFIER = 0.2
 
 initApp()
+pygame.joystick.init()
+joystick = pygame.joystick.Joystick(0)
+
 while appAlive:
     screen.fill(BLACK)
-    screen.blit(bgImage, (0,0))
+
     time = clock.get_time()*TIME_MODIFIER
+    level = Level(bgImage, screen)
+
 #    print("Frame time: %s"%time)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -86,7 +86,9 @@ while appAlive:
             mosquito.acc_y = 0
         
     mosquito.updateForTime(time)
-    screen.blit(mosquito.image, (mosquito.x,mosquito.y))
+    level.update(-mosquito.x, -mosquito.y)
+    level.draw()
+    screen.blit(mosquito.image, (W_WIDTH/2,W_HEIGHT/2))
     #InfoText = fontTahoma.render("DBG: Y: " + str(yOffset) + " X: " + str(xOffset), True, BLACK)
     # screen.blit(InfoText, [W_WIDTH - 132, W_HEIGHT - 30])
     

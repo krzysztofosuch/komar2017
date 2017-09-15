@@ -30,6 +30,6 @@ class Mosquito:
 #            self.speed_y = min(self.speed_y+(self.acceleration*time*self.acc_y), self.may_speed)
 #        else:
 #            self.speed_y = self.speed_y/(math.copysign(self.deceleration, -self.speed_y)*time)
-        print('ACC = %s, speed: %s'%(self.acc_x, self.speed_x))
+#        print('ACC = %s, speed: %s'%(self.acc_x, self.speed_x))
 
 import math
