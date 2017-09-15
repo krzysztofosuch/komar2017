@@ -1,6 +1,7 @@
 import pygame
 from game import Game
 
+
 class Menu:
     ITEM_START = 'Start Game'
     ITEM_EXIT = 'Exit'
@@ -46,7 +47,7 @@ class Menu:
             if Menu.ITEM_START == item.name:
                 self.game.scene = Game.SCENE_GAME
             if Menu.ITEM_EXIT == item.name:
-                self.game.alive = False
+                self.game.enabled = False
 
         if self.current < 0:
             self.current = len(self.items) - 1
