@@ -81,6 +81,7 @@ while game.enabled:
         elif event.type == pygame.KEYDOWN:
             if event.key in keys_pressed:
                 keys_down[event.key] = True
+            if event.key in keys_down:
                 keys_pressed[event.key] = True
         elif event.type == pygame.KEYUP:
             if event.key in keys_pressed:
