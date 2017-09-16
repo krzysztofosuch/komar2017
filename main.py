@@ -63,8 +63,9 @@ def initApp():
 
     human = Human(randX, randY)
     human.set_boundaries(boundariesX, boundariesY)
-    human.animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1_walk.pyxel', 'tmp'))
-    
+    human.walk_animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1_walk.pyxel', 'tmp'))
+    human.scream_animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1 Scream.pyxel', 'tmp'))
+
     water.x = random.randrange(-bgSize[0],0)
     water.y = -bgSize[1] + random.randrange(260,280)
     water.image = pygame.image.load("resources/gfx/kałuża.png").convert_alpha()
