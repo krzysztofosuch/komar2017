@@ -1,6 +1,8 @@
 class Game:
     SCENE_MENU = 'Menu'
     SCENE_GAME = 'Game'
+    SCENE_CREDITS = 'Credits'
+    SCENE_GAME_OVER = 'Game Over'
 
     def __init__(self, screen):
         self.scene = Game.SCENE_MENU
