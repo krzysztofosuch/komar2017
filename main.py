@@ -3,6 +3,7 @@
 import pygame
 from characters.Mosquito import Mosquito
 from characters.Human import Human
+from characters.Water import Water
 from viewport import Viewport
 from menu import Menu
 from game import Game
@@ -31,6 +32,7 @@ mosquito.x = 100
 mosquito.y = 100
 
 human = 0
+water = None
 bgImage = 0
 
 
@@ -52,7 +54,9 @@ def initApp():
 
     mosquito.set_boundaries(boundariesX, boundariesY)
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
-    mosquito.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
+    mosquito.empty_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
+    mosquito.mid_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony1.pyxel', 'tmp'))
+    mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony2.pyxel', 'tmp'))
 
     randX = random.randrange(-bgSize[0],0)
     randY = -bgSize[1] + random.randrange(260,280)
@@ -60,7 +64,10 @@ def initApp():
     human = Human(randX, randY)
     human.set_boundaries(boundariesX, boundariesY)
     human.animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1_walk.pyxel', 'tmp'))
-
+    
+    water.x = random.randrange(-bgSize[0],0)
+    water.y = -bgSize[1] + random.randrange(260,280)
+    water.image = pygame.image.load("resources/gfx/kałuża.png").convert_alpha()
     screen.fill(BLACK)
     pygame.display.flip()
 
@@ -76,6 +83,7 @@ def create_key_set():
         pygame.K_GREATER: False
     }
 
+water = Water()
 keys_pressed = create_key_set()
 TIME_MODIFIER = 0.2
 initApp()
@@ -89,7 +97,7 @@ else:
 game = Game(screen)
 menu = Menu(game)
 
-viewport = Viewport(bgImage, screen, mosquito, [human])
+viewport = Viewport(bgImage, screen, mosquito, [human, water])
 last_keys_pressed = create_key_set()
 while game.enabled:
     screen.fill(BLACK)
@@ -147,10 +155,23 @@ while game.enabled:
 
         human.updateForTime(time)
 
-        mosquito.updateForTime(time)
-        mosquito.suck = keys_pressed[pygame.K_SLASH]
-        mosquito.unsuck = keys_pressed[pygame.K_GREATER]
         viewport.update(mosquito.x, mosquito.y)
+        mosquito.updateForTime(time)
+        if len(list(filter(lambda x: x.suckable, viewport.collisions)))>0:
+            if mosquito.suck:
+                mosquito.suck = keys_pressed[pygame.K_SLASH]
+            else:
+                mosquito.suck = keys_down[pygame.K_SLASH]
+        else:
+            mosquito.suck = False
+        
+        if len(list(filter(lambda x: x.unsuckable, viewport.collisions)))>0:
+            if mosquito.unsuck:
+                mosquito.unsuck = keys_pressed[pygame.K_SLASH]
+            else:
+                mosquito.unsuck = keys_down[pygame.K_SLASH]
+        else:
+            mosquito.unsuck = False
         viewport.draw()
         pygame.draw.rect(screen, pygame.Color(255, 0, 0), (20, 500, 20, -mosquito.blood_percent * 2))
 

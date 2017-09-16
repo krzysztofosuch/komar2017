@@ -2,6 +2,8 @@ import pygame
 from pprint import pprint
 
 class Character:
+    suckable = False
+    unsuckable = False
     x = 0
     y = 0
     acc_x = 0

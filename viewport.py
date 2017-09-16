@@ -1,4 +1,5 @@
 class Viewport:
+    collisions = []
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
         self.y = mosquito.y
@@ -45,14 +46,14 @@ class Viewport:
 
         mosquito_rect = self.mosquito.rect()
         abs_mosquito_rect = mosquito_rect.move(mosquitoX, mosquitoY)
-
+        self.collisions = []
         # Check collisions, render enemies
         for enemy in self.enemies:
             enemy_position = (bX - enemy.x, bY - enemy.y)
             self.screen.blit(enemy.current_image(), enemy_position)
             abs_enemy_rect = enemy.rect().move(enemy_position)
-
             if abs_enemy_rect.colliderect(abs_mosquito_rect):
-                pass  # collision detected
-
+                self.collisions.append(enemy)
+                
+        
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))

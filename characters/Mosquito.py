@@ -42,8 +42,9 @@ class Mosquito(Character):
                 self.speed_y -= self.deceleration*time
             else:
                 self.speed_y += self.deceleration*time
-        if self.animation:
-            self.animation.update(time)
+        self.empty_animation.update(time)
+        self.mid_animation.update(time)
+        self.full_animation.update(time)
         if self.suck:
             self.blood_percent += time*self.blood_sucking_speed
             self.blood_percent = min(self.blood_percent,100)
@@ -57,8 +58,20 @@ class Mosquito(Character):
 
 
     def update_accelerations(self):
-        self.acceleration = self.base_acceleration*(1.5-(self.blood_percent/100))
-        self.deceleration = self.base_deceleration*(1.5-(self.blood_percent/100))
+        self.acceleration = self.base_acceleration*(1.3-(self.blood_percent/100))
+        self.deceleration = self.base_deceleration*(1.3-(self.blood_percent/100))
+
+    def current_image(self):
+        if self.blood_percent < 30:
+            animation = self.empty_animation
+        elif self.blood_percent < 70:
+            animation = self.mid_animation
+        else:
+            animation = self.full_animation
+        image = animation.current_image()
+        if self.direction:
+            image = pygame.transform.flip(image, True, False)
+        return pygame.transform.scale2x(image)
 
 import math
 import pyxel
