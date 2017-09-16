@@ -2,7 +2,7 @@
 
 import pygame
 from characters.Mosquito import Mosquito
-from level import Level
+from viewport import Viewport
 from menu import Menu
 from game import Game
 import sys
@@ -73,7 +73,7 @@ else:
 game = Game(screen)
 menu = Menu(game)
 
-level = Level(bgImage, screen, mosquito)
+viewport = Viewport(bgImage, screen, mosquito)
 last_keys_pressed = create_key_set()
 while game.enabled:
     screen.fill(BLACK)
@@ -129,10 +129,10 @@ while game.enabled:
             mosquito.acc_y = 0
         mosquito.updateForTime(time)
         mosquito.suck = keys_pressed[pygame.K_SLASH]
-        level.update(mosquito.x, mosquito.y)
-        level.draw()
-        pygame.draw.rect(screen, pygame.Color(255,0,0), (20,500,20,-mosquito.blood_percent*2))
-    
+        viewport.update(mosquito.x, mosquito.y)
+        viewport.draw()
+        pygame.draw.rect(screen, pygame.Color(255, 0, 0), (20, 500, 20, -mosquito.blood_percent * 2))
+
     pygame.display.flip()
     clock.tick(60)
 
