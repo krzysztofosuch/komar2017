@@ -43,6 +43,7 @@ class Mosquito(Character):
             else:
                 self.speed_y += self.deceleration*time
         self.empty_animation.update(time)
+        self.mid_animation.update(time)
         self.full_animation.update(time)
         if self.suck:
             self.blood_percent += time*self.blood_sucking_speed
@@ -58,8 +59,10 @@ class Mosquito(Character):
         self.deceleration = self.base_deceleration*(1.3-(self.blood_percent/100))
 
     def current_image(self):
-        if self.blood_percent < 50:
+        if self.blood_percent < 30:
             animation = self.empty_animation
+        elif self.blood_percent < 70:
+            animation = self.mid_animation
         else:
             animation = self.full_animation
         image = animation.current_image()

@@ -55,7 +55,8 @@ def initApp():
     mosquito.set_boundaries(boundariesX, boundariesY)
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     mosquito.empty_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
-    mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony1.pyxel', 'tmp'))
+    mosquito.mid_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony1.pyxel', 'tmp'))
+    mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony2.pyxel', 'tmp'))
 
     randX = random.randrange(-bgSize[0],0)
     randY = -bgSize[1] + random.randrange(260,280)
