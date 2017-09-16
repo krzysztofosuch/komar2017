@@ -8,7 +8,6 @@ class Bat(Character):
         new_y = self.y + self.speed_y*time
         self.y = new_y
 
-
         if self.acc_x != 0:
             self.speed_x = max(min(self.speed_x+(self.acceleration*time*self.acc_x), self.max_speed), -self.max_speed)
         else:

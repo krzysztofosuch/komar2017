@@ -8,10 +8,12 @@ from characters.Bat import Bat
 from characters.Camping import Camping
 from characters.Campfire import Campfire
 from characters.Hollow import Hollow
+from characters.Humanraider import Humanraider
+from characters.RaidBall import RaidBall
 
 
 class Viewport:
-    order = [Campfire, Camping, Water, Human, Bat]
+    order = [Campfire, Camping, Water, Human, Humanraider, Bat, RaidBall]
 
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
@@ -30,8 +32,10 @@ class Viewport:
     def update(self, x, y):
         self.x = x - (self.mosquitoSize[0] / 2)
         self.y = y - (self.mosquitoSize[1] / 2)
-
+    def randomlyPlacePowerup(self):
+        pass    
     def draw(self):
+        self.randomlyPlacePowerup()
         centerX = self.screen_size[0] / 2
         centerY = self.screen_size[1] / 2
         maxY = self.screen_size[1]
@@ -78,7 +82,7 @@ class Viewport:
             # Collision detection
             if abs_enemy_rect.colliderect(abs_mosquito_rect):
                 self.collisions.append(enemy)
-
+                    
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
 
     def addEnemy(self, enemy):
@@ -111,6 +115,17 @@ class Viewport:
             grill.x = random.randint(-self.background_size[0], 0) - mod_x
             grill.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
             self.landscape_elements.append(grill)
+
     def updateForTimeOnEnemies(self, time):
         for enemy in self.enemies:
             enemy.updateForTime(time)
+            if getattr(enemy, 'ttl', None) is not None and enemy.ttl <= 0:
+                self.enemies.remove(enemy)
+            if isinstance(enemy, Humanraider):
+                if enemy.cooldown <= 0:
+                    ball = enemy.fire_raid((self.mosquito.x, self.mosquito.y))
+                    if ball:
+                        self.addEnemy(ball)
+                     
+                        
+from var_dump import var_dump

@@ -3,6 +3,7 @@
 import pygame
 from characters.Mosquito import Mosquito
 from characters.Human import Human
+from characters.Humanraider import Humanraider
 from characters.Water import Water
 from characters.Bat import Bat
 from viewport import Viewport
@@ -118,7 +119,23 @@ def createPuddle(viewport):
     water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
 
     viewport.addEnemy(water)
+def createHumanraider(viewport):
+    randX = random.randrange(-bgSize[0], 0)
+    randY = -bgSize[1] + random.randrange(260, 280)
+    boundariesX = (0, bgSize[0])
+    boundariesY = (0, bgSize[1])
 
+    skin = random.randrange(1,5)
+
+    walkAnimation = 'resources/gfx/humanraider/Human_w.pyxel'
+    screamAnimation = 'resources/gfx/humanraider/Human_s.pyxel'
+
+    humanraider = Humanraider(randX, randY)
+    humanraider.set_boundaries(boundariesX, boundariesY)
+    humanraider.walk_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(walkAnimation, 'tmp'))
+    humanraider.scream_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(screamAnimation, 'tmp'))
+    viewport.addEnemy(humanraider)
+    
 
 water = Water()
 keys_pressed = create_key_set()
@@ -196,7 +213,10 @@ while game.enabled:
             mosquito.acc_y = 0
 
         if keys_down[pygame.K_1]:
-            createHuman(viewport)
+            if random.choice([True,False]):
+                createHuman(viewport)
+            else:
+                createHumanraider(viewport)
 
         if keys_down[pygame.K_2]:
             createPuddle(viewport)
@@ -205,9 +225,7 @@ while game.enabled:
 
         viewport.update(mosquito.x, mosquito.y)
         mosquito.updateForTime(time)
-        # print(mosquito.x, mosquito.y)
         bat.update_accelerations((mosquito.x, mosquito.y))
-        # bat.updateForTime(time)
         if len(list(filter(lambda x: x.suckable, viewport.collisions)))>0:
             if mosquito.suck:
                 mosquito.suck = keys_pressed[pygame.K_SLASH]
@@ -223,9 +241,10 @@ while game.enabled:
                 mosquito.unsuck = keys_down[pygame.K_SLASH]
         else:
             mosquito.unsuck = False
-        if len(list(filter(lambda x: x.killer, viewport.collisions)))>0:
-            print("ZAJEBOŁ CIE NETOPYR");
-            raise
+        if not 'jebacnietopyra' in sys.argv:
+            if len(list(filter(lambda x: x.killer, viewport.collisions)))>0:
+                print("ZAJEBOŁ CIE NETOPYR");
+                raise
 
         viewport.updateForTimeOnEnemies(time)
         viewport.draw()
