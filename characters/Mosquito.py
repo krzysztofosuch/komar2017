@@ -42,10 +42,12 @@ class Mosquito(Character):
         if self.suck:
             self.blood_percent += time*self.blood_sucking_speed
             self.blood_percent = min(self.blood_percent,100)
+            self.score.addPoints(1*(time)/15)
             self.update_accelerations()
         if self.unsuck:
             self.blood_percent -= time*self.blood_sucking_speed
             self.blood_percent = max(self.blood_percent,0)
+            self.score.addPoints(5*(time)/10)
             self.update_accelerations()
 
         # print(self.x,' ', self.y)
