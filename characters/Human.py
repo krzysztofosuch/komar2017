@@ -14,6 +14,7 @@ class Human(Character):
         # self.x = self.x + self.speed_x * time
 
         if self.rest == 0:
+            self.animation = 1
             if self.length > 0:
                 self.x += time * self.speed_x * self.direction
                 self.length -= time * self.speed_x
@@ -21,13 +22,15 @@ class Human(Character):
                 self.setRest()
 
         elif self.rest == 1:
+            self.animation = 0
             if self.remainingRest > 0:
                 self.remainingRest -= time
             else:
                 self.setDestination()
 
-        self.walk_animation.update(time)
-        self.scream_animation.update(time)
+        if self.animation:
+            self.walk_animation.update(time)
+            self.scream_animation.update(time)
 
         print(self.direction)
         # print('l:  ',self.length, ' r: ', self.rest, ' rr: ', self.remainingRest)
@@ -56,8 +59,10 @@ class Human(Character):
     def current_image(self):
         animation = self.walk_animation
         image = animation.current_image()
-        if self.direction:
+        if self.direction == 1:
             image = pygame.transform.flip(image, True, False)
+        elif self.direction == -1:
+            image = pygame.transform.flip(image, False, False)
         return pygame.transform.scale2x(image)
 
 import random
