@@ -28,6 +28,12 @@ class Pyxel:
         for index, layer in data['canvas']['layers'].items():
             self.layers.append(Layer(self.location, index, layer['tileRefs'], tiles))
 
+    def main_layer_tile_count(self):
+        return len(self.layers[0].tiles)
+
+    def get_tile_image(self, layer, tile):
+        return self.layers[layer].get_tile_image(tile)
+
 
 class Layer:
     def __init__(self, file_location, index, tile_refs, tiles):
@@ -40,14 +46,46 @@ class Layer:
             ref_tile = RefTile(tiles[ref['index']])
             self.tiles.append(ref_tile)
 
+    def get_tile_image(self, tile):
+        return self.tiles[tile].get_image()
+
 
 class RefTile:
     def __init__(self, tile):
         self.tile = tile
+
+    def get_image(self):
+        return self.tile.image
 
 
 class Tile:
     def __init__(self, file_location, index):
         self.index = index
         path = os.path.join(file_location, 'tile' + str(self.index) + '.png')
-        self.image = pygame.image.load(path)
+        self.image = pygame.image.load(path).convert()
+
+
+class AnimatedPyxel:
+    def __init__(self, pyxel, speed=15):
+        self.pyxel = pyxel
+        self.current_frame = 0
+        self.last_frame = pyxel.main_layer_tile_count() - 1
+        self.time_unit_last_frame = 0
+        self.speed = speed
+
+    def next_frame(self):
+        self.current_frame += 1
+
+        if self.current_frame > self.last_frame:
+            self.current_frame = 0
+
+    def current_image(self):
+        return self.pyxel.get_tile_image(0, self.current_frame)
+
+    def update(self, time):
+        self.time_unit_last_frame += time
+
+        if self.time_unit_last_frame > self.speed:
+            self.time_unit_last_frame -= self.speed
+            self.next_frame()
+
