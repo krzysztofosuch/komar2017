@@ -13,8 +13,8 @@ import random
 from var_dump import var_dump
 import pyxel
 # GLOBALS
-W_WIDTH = 1024
-W_HEIGHT = 600
+W_WIDTH = 1280
+W_HEIGHT = 800
 
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
@@ -32,8 +32,8 @@ mosquito = Mosquito()
 mosquito.x = 100
 mosquito.y = 100
 bat = Bat()
-bat.x = -100
-bat.y = -100
+bat.x = -300
+bat.y = -300
 human = 0
 water = None
 bgImage = 0
@@ -104,6 +104,7 @@ menu = Menu(game)
 
 viewport = Viewport(bgImage, screen, mosquito, [human, water, bat])
 last_keys_pressed = create_key_set()
+pygame.display.toggle_fullscreen()
 while game.enabled:
     screen.fill(BLACK)
 
@@ -162,8 +163,9 @@ while game.enabled:
 
         viewport.update(mosquito.x, mosquito.y)
         mosquito.updateForTime(time)
+        print(mosquito.x, mosquito.y)
         bat.update_accelerations((mosquito.x, mosquito.y))
-        #bat.updateForTime(time)
+        bat.updateForTime(time)
         if len(list(filter(lambda x: x.suckable, viewport.collisions)))>0:
             if mosquito.suck:
                 mosquito.suck = keys_pressed[pygame.K_SLASH]
