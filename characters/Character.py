@@ -2,6 +2,8 @@ import pygame
 from pprint import pprint
 
 class Character:
+    suckable = False
+    unsuckable = False
     x = 0
     y = 0
     acc_x = 0
@@ -34,6 +36,5 @@ class Character:
 
         if self.direction:
             image = pygame.transform.flip(image, True, False)
-
         return pygame.transform.scale2x(image)
 
