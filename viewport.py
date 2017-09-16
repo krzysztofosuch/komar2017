@@ -1,9 +1,6 @@
 import random
-
 import itertools
-
 from characters.Tent import Tent
-from pprint import pprint
 
 
 class Viewport:
@@ -76,8 +73,10 @@ class Viewport:
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
 
     def generate_landscape(self, background_index):
+        mod_x = background_index * self.background_size[0]
+
         for _ in itertools.repeat(0, 1):
             tent = Tent()
-            tent.x = random.randint(-self.background_size[0], 0)
+            tent.x = random.randint(-self.background_size[0], 0) - mod_x
             tent.y = random.randint(150-self.background_size[1], 300 - self.background_size[1])
             self.landscape_elements.append(tent)
