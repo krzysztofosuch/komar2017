@@ -77,7 +77,6 @@ def initApp():
     screen.fill(BLACK)
     pygame.display.flip()
 
-
 def create_key_set():
     return {
         pygame.K_RIGHT: False,
@@ -108,6 +107,7 @@ mosquito.score = score
 viewport = Viewport(bgImage, screen, mosquito, [human, water, bat])
 last_keys_pressed = create_key_set()
 pygame.display.toggle_fullscreen()
+pygame.mouse.set_visible(False)
 while game.enabled:
     screen.fill(BLACK)
 
