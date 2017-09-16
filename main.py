@@ -44,6 +44,7 @@ def initApp():
     mainFont = pygame.font.SysFont('Tahoma', 16, False, False)
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
+
     bgImage = pygame.image.load("resources/gfx/tlo_tyl.png").convert()
     bgSize = bgImage.get_size()
     boundariesX = (0, bgSize[0])
@@ -71,7 +72,8 @@ def create_key_set():
         pygame.K_UP: False,
         pygame.K_DOWN: False,
         pygame.K_RETURN: False,
-        pygame.K_SLASH: False
+        pygame.K_SLASH: False,
+        pygame.K_GREATER: False
     }
 
 keys_pressed = create_key_set()
@@ -87,7 +89,7 @@ else:
 game = Game(screen)
 menu = Menu(game)
 
-viewport = Viewport(bgImage, screen, mosquito, human)
+viewport = Viewport(bgImage, screen, mosquito, [human])
 last_keys_pressed = create_key_set()
 while game.enabled:
     screen.fill(BLACK)
@@ -115,6 +117,7 @@ while game.enabled:
         keys_pressed[pygame.K_UP] =joystick.get_axis(1) < -0.5
         keys_pressed[pygame.K_RETURN] = joystick.get_button(9)
         keys_pressed[pygame.K_SLASH] = joystick.get_button(7)
+        keys_pressed[pygame.K_GREATER] = joystick.get_button(6)
         for key, pressed in keys_pressed.items():
             if pressed:
                 if not last_keys_pressed[key]:
@@ -146,6 +149,7 @@ while game.enabled:
 
         mosquito.updateForTime(time)
         mosquito.suck = keys_pressed[pygame.K_SLASH]
+        mosquito.unsuck = keys_pressed[pygame.K_GREATER]
         viewport.update(mosquito.x, mosquito.y)
         viewport.draw()
         pygame.draw.rect(screen, pygame.Color(255, 0, 0), (20, 500, 20, -mosquito.blood_percent * 2))

@@ -4,19 +4,17 @@ class Mosquito(Character):
     blood_percent = 0
     blood_sucking_speed = 0.1
     suck = False
+    unsuck = False
 
     def updateForTime(self, time):
-        new_x = self.x + self.speed_x*time
-        if new_x > self.x_bound[0] and new_x < self.x_bound[1]:
-            self.x = new_x
-        else:
-            if new_x < self.x_bound[0]:
-                new_x = self.x_bound[0]+2
-            else:
-                new_x = self.x_bound[1]-2
-            self.x = new_x
-            self.acc_x = -self.acc_x
-            self.speed_x = -self.speed_x
+        self.x = self.x + self.speed_x * time
+
+        if self.x > self.x_bound[1]:
+            self.x = 0
+
+        if self.x < 0:
+            self.x = self.x_bound[1]
+
         new_y = self.y + self.speed_y*time
         if new_y > self.y_bound[0] and new_y < self.y_bound[1]:
             self.y = new_y
@@ -48,5 +46,17 @@ class Mosquito(Character):
             self.animation.update(time)
         if self.suck:
             self.blood_percent += time*self.blood_sucking_speed
-            print(self.blood_percent)
+            self.blood_percent = min(self.blood_percent,100)
+            self.update_accelerations()
+        if self.unsuck:
+            self.blood_percent -= time*self.blood_sucking_speed
+            self.blood_percent = max(self.blood_percent,0)
+            self.update_accelerations()
 
+    def update_accelerations(self):
+        self.acceleration = self.base_acceleration*(1.5-(self.blood_percent/100))
+        self.deceleration = self.base_deceleration*(1.5-(self.blood_percent/100))
+
+import math
+import pyxel
+import pygame
