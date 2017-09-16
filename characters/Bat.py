@@ -2,7 +2,7 @@ from characters.Character import Character
 
 class Bat(Character):
     killer = True
-    max_speed = 0.2
+    max_speed = 0.4
     def updateForTime(self, time):
         self.x = self.x + self.speed_x * time
         new_y = self.y + self.speed_y*time
@@ -27,7 +27,7 @@ class Bat(Character):
     def update_accelerations(self, target_position):
         x_diff = -target_position[0]-self.x
         y_diff = -target_position[1]-self.y
-        multipliter = 0.2
+        multipliter = 0.25
         self.acc_x = x_diff*multipliter
         self.acc_y = y_diff*multipliter
         
