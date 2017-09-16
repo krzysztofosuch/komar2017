@@ -15,7 +15,7 @@ class Character:
     acceleration = 0.02
     deceleration = 0.01
     max_speed = 3
-    direction = False
+    direction = 1
     animation = None
     image = None
     x_bound = None
@@ -34,7 +34,10 @@ class Character:
         else:
             image = self.image
 
-        if self.direction:
+        if self.direction == 1:
             image = pygame.transform.flip(image, True, False)
+        elif self.direction == -1:
+            image = pygame.transform.flip(image, False, False)
+
         return pygame.transform.scale2x(image)
 
