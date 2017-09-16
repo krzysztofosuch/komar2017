@@ -1,1 +1,6 @@
 .idea
+__pycache__/game.cpython-36.pyc
+__pycache__/level.cpython-36.pyc
+__pycache__/menu.cpython-36.pyc
+__pycache__/pyxel.cpython-36.pyc
+characters/__pycache__/Mosquito.cpython-36.pyc
