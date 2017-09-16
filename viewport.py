@@ -1,6 +1,3 @@
-from pprint import pprint
-
-
 class Viewport:
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
