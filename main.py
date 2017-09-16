@@ -39,7 +39,7 @@ def initApp():
     mainFont = pygame.font.SysFont('Tahoma', 16, False, False)
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
-    bgImage = pygame.image.load("resources/gfx/background.png").convert()
+    bgImage = pygame.image.load("resources/gfx/tlo_tyl.png").convert()
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     screen.fill(BLACK)
     pygame.display.flip()
