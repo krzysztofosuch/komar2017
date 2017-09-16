@@ -1,6 +1,8 @@
 import random
 import itertools
 
+import pygame
+
 from characters.Grill import Grill
 from characters.Water import Water
 from characters.Human import Human
@@ -61,15 +63,17 @@ class Viewport:
                 self.generate_landscape(index)
                 self.generated_screens.append(index)
 
-        mosquito_rect = self.mosquito.rect()
+        mosquito_rect = self.mosquito.rect_for_collision()
         abs_mosquito_rect = mosquito_rect.move(mosquitoX, mosquitoY)
         self.collisions = []
+        pygame.draw.rect(self.screen, (255, 0, 0), abs_mosquito_rect, 1)
 
         # Check collisions, render enemies (or landscape)
         for enemy in sorted(self.enemies, key=lambda x: self.order.index(x.__class__)):
             enemy_position = (bX - enemy.x, bY - enemy.y)
             self.screen.blit(enemy.current_image(), enemy_position)
-            abs_enemy_rect = enemy.rect().move(enemy_position)
+            abs_enemy_rect = enemy.rect_for_collision().move(enemy_position)
+            pygame.draw.rect(self.screen, (255, 0, 0), abs_enemy_rect, 1)
 
             # Collision detection
             if abs_enemy_rect.colliderect(abs_mosquito_rect):

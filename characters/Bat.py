@@ -1,3 +1,5 @@
+import pygame
+
 from characters.Character import Character
 
 class Bat(Character):
@@ -24,10 +26,13 @@ class Bat(Character):
             else:
                 self.speed_y += self.deceleration*time
         self.animation.update(time)
+
     def update_accelerations(self, target_position):
         x_diff = -target_position[0]-self.x
         y_diff = -target_position[1]-self.y
-        multipliter = 0.25
-        self.acc_x = x_diff*multipliter
-        self.acc_y = y_diff*multipliter
-        
+        multiplier = 0.25
+        self.acc_x = x_diff*multiplier
+        self.acc_y = y_diff*multiplier
+
+    def rect_for_collision(self):
+        return pygame.Rect((35, 35), (80, 80))
