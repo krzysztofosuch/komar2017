@@ -1,4 +1,8 @@
+from characters.Water import Water
+from characters.Human import Human
+from characters.Bat import Bat
 class Viewport:
+    order = [Water, Human, Bat]
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
         self.y = mosquito.y
@@ -46,10 +50,8 @@ class Viewport:
         self.collisions = []
 
         # Check collisions, render enemies
-        for enemy in self.enemies:
+        for enemy in sorted(self.enemies, key=lambda x: self.order.index(x.__class__)):
             enemy_position = (bX - enemy.x, bY - enemy.y)
-            # if enemy.killer:
-            #     print("NIETOPYR KURWA", enemy_position)
             self.screen.blit(enemy.current_image(), enemy_position)
             abs_enemy_rect = enemy.rect().move(enemy_position)
             if abs_enemy_rect.colliderect(abs_mosquito_rect):
@@ -59,7 +61,4 @@ class Viewport:
 
     def addEnemy(self, enemy):
         self.enemies.append(enemy)
-        self.sortEnemies()
 
-    def sortEnemies(self):
-        pass
