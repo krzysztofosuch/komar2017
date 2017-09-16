@@ -94,3 +94,7 @@ class Viewport:
             campfire.x = random.randint(-self.background_size[0], 0) - mod_x
             campfire.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
             self.landscape_elements.append(campfire)
+
+    def updateForTimeOnEnemies(self, time):
+        for enemy in self.enemies:
+            enemy.updateForTime(time)
