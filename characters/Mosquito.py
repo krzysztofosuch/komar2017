@@ -5,9 +5,9 @@ class Mosquito:
     acc_y = 0
     speed_x = 0
     speed_y = 0
-    acceleration = 0.01
+    acceleration = 0.02
     deceleration = 0.01
-    max_speed = 2
+    max_speed = 3
     direction = False
     blood_percent = 0
     blood_sucking_speed = 0.1
@@ -38,14 +38,14 @@ class Mosquito:
 
 
         if self.acc_x != 0:
-            self.speed_x = min(self.speed_x+(self.acceleration*time*self.acc_x), self.max_speed)
+            self.speed_x = max(min(self.speed_x+(self.acceleration*time*self.acc_x), self.max_speed), -self.max_speed)
         else:
             if self.speed_x > 0:
                 self.speed_x -= self.deceleration*time
             else:
                 self.speed_x += self.deceleration*time
         if self.acc_y != 0:
-            self.speed_y = min(self.speed_y+(self.acceleration*time*self.acc_y), self.max_speed)
+            self.speed_y = max(min(self.speed_y+(self.acceleration*time*self.acc_y), self.max_speed), -self.max_speed)
         else:
             if self.speed_y > 0:
                 self.speed_y -= self.deceleration*time
