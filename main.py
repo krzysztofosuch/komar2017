@@ -40,8 +40,10 @@ def initApp():
     mainFont = pygame.font.SysFont('Tahoma', 16, False, False)
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
+
     bgImage = pygame.image.load("resources/gfx/tlo_tyl.png").convert()
     bgSize = bgImage.get_size()
+
     mosquito.set_boundaries((0,bgSize[0]), (0,bgSize[1]))
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     mosquito.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
