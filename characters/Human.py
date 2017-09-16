@@ -39,7 +39,6 @@ class Human(Character):
         #     self.x += time * self.speed_x * self.direction
         #     self.length -= time * self.speed_x
 
-        print(self.direction)
         # print('l:  ',self.length, ' r: ', self.rest, ' rr: ', self.remainingRest)
 
         # if self.x > self.x_bound[1]:

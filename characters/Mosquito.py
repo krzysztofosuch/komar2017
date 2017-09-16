@@ -9,14 +9,9 @@ class Mosquito(Character):
     def updateForTime(self, time):
         self.x = self.x + self.speed_x * time
 
-        if self.x > self.x_bound[1]:
-            self.x = 0
-
-        if self.x < 0:
-            self.x = self.x_bound[1]
-
         new_y = self.y + self.speed_y*time
-        if new_y > self.y_bound[0] and new_y < self.y_bound[1]:
+
+        if self.y_bound[0] < new_y < self.y_bound[1]:
             self.y = new_y
         else:
             if new_y < self.y_bound[0]:
@@ -26,7 +21,6 @@ class Mosquito(Character):
             self.y = new_y
             self.acc_y = -self.acc_y
             self.speed_y = -self.speed_y
-
 
         if self.acc_x != 0:
             self.speed_x = max(min(self.speed_x+(self.acceleration*time*self.acc_x), self.max_speed), -self.max_speed)
@@ -55,7 +49,6 @@ class Mosquito(Character):
             self.update_accelerations()
 
         # print(self.x,' ', self.y)
-
 
     def update_accelerations(self):
         self.acceleration = self.base_acceleration*(1.3-(self.blood_percent/100))

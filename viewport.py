@@ -1,6 +1,4 @@
 class Viewport:
-    collisions = []
-
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
         self.y = mosquito.y
@@ -11,6 +9,8 @@ class Viewport:
         self.mosquito = mosquito
         self.mosquitoSize = self.mosquito.image.get_size()
         self.enemies = enemies
+        self.bg_instances = dict()
+        self.collisions = []
 
     def update(self, x, y):
         self.x = x - (self.mosquitoSize[0] / 2)
@@ -34,27 +34,17 @@ class Viewport:
             mosquitoY = centerY + (centerY - (maxMosquitoY - self.y))
             bY = -maxMosquitoY + maxY
 
-        # Background instances
-        instances = [0.0]
+        bg_current_index = int(self.x / self.background_size[0])
 
-        # Render background on right side
-        if self.screen_size[0] + self.x > self.background_size[0]:
-            right_edge = self.background_size[0] - self.x + centerX
-            self.screen.blit(self.background, (right_edge, bY))
-            instances.append(right_edge)
-
-        # Render background on left side
-        if self.x - centerX < 0:
-            left_edge = -self.background_size[0] - self.x + centerX
-            self.screen.blit(self.background, (left_edge, bY))
-            instances.append(left_edge)
-
-        # Render main background
-        self.screen.blit(self.background, (bX, bY))
+        for mod in [-1, 0, 1]:
+            index = bg_current_index + mod
+            background_x = index * self.background_size[0] - self.x + centerX
+            self.screen.blit(self.background, (background_x, bY))
 
         mosquito_rect = self.mosquito.rect()
         abs_mosquito_rect = mosquito_rect.move(mosquitoX, mosquitoY)
         self.collisions = []
+
         # Check collisions, render enemies
         for enemy in self.enemies:
             enemy_position = (bX - enemy.x, bY - enemy.y)
