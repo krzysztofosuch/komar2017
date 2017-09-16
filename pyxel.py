@@ -3,7 +3,7 @@ import os
 import pygame
 import uuid
 import zipfile
-import pprint
+
 
 class Pyxel:
     def __init__(self, file_location, tmp_dir):
@@ -66,10 +66,12 @@ class Tile:
 
 
 class AnimatedPyxel:
-    def __init__(self, pyxel):
+    def __init__(self, pyxel, speed=15):
         self.pyxel = pyxel
         self.current_frame = 0
         self.last_frame = pyxel.main_layer_tile_count() - 1
+        self.time_unit_last_frame = 0
+        self.speed = speed
 
     def next_frame(self):
         self.current_frame += 1
@@ -79,4 +81,11 @@ class AnimatedPyxel:
 
     def current_image(self):
         return self.pyxel.get_tile_image(0, self.current_frame)
+
+    def update(self, time):
+        self.time_unit_last_frame += time
+
+        if self.time_unit_last_frame > self.speed:
+            self.time_unit_last_frame -= self.speed
+            self.next_frame()
 

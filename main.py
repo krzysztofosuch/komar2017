@@ -94,6 +94,7 @@ while game.enabled:
 
     if game.scene == Game.SCENE_MENU:
         menu.handle_keys(keys_down)
+        menu.update(time)
         menu.render()
     else:
         if keys_pressed[pygame.K_RIGHT]:
