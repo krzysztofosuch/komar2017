@@ -100,7 +100,6 @@ def createHuman(viewport):
     boundariesY = (0, bgSize[1])
 
     skin = random.randrange(1,5)
-    print(skin)
 
     walkAnimation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
     screamAnimation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
@@ -111,7 +110,6 @@ def createHuman(viewport):
     human.scream_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(screamAnimation, 'tmp'))
 
     viewport.addEnemy(human)
-    print(viewport.enemies)
 
 def createPuddle(viewport):
     water = Water()
@@ -120,7 +118,6 @@ def createPuddle(viewport):
     water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
 
     viewport.addEnemy(water)
-    print(viewport.enemies)
 
 
 water = Water()
