@@ -4,6 +4,7 @@ import pygame
 from characters.Mosquito import Mosquito
 from characters.Human import Human
 from characters.Water import Water
+from characters.Bat import Bat
 from viewport import Viewport
 from menu import Menu
 from game import Game
@@ -13,8 +14,8 @@ import random
 from var_dump import var_dump
 import pyxel
 # GLOBALS
-W_WIDTH = 1024
-W_HEIGHT = 600
+W_WIDTH = 1280
+W_HEIGHT = 800
 
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
@@ -31,7 +32,9 @@ yOffset = 0
 mosquito = Mosquito()
 mosquito.x = 100
 mosquito.y = 100
-
+bat = Bat()
+bat.x = -300
+bat.y = -300
 human = 0
 water = None
 bgImage = 0
@@ -59,6 +62,7 @@ def initApp():
     mosquito.mid_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony1.pyxel', 'tmp'))
     mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony2.pyxel', 'tmp'))
 
+    bat.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Topesz_Latajuncy.pyxel', 'tmp'))
     randX = random.randrange(-bgSize[0],0)
     randY = -bgSize[1] + random.randrange(260,280)
 
@@ -101,8 +105,9 @@ menu = Menu(game)
 score = Score(screen)
 mosquito.score = score
 
-viewport = Viewport(bgImage, screen, mosquito, [water, human])
+viewport = Viewport(bgImage, screen, mosquito, [human, water, bat])
 last_keys_pressed = create_key_set()
+pygame.display.toggle_fullscreen()
 while game.enabled:
     screen.fill(BLACK)
 
@@ -161,6 +166,9 @@ while game.enabled:
 
         viewport.update(mosquito.x, mosquito.y)
         mosquito.updateForTime(time)
+        print(mosquito.x, mosquito.y)
+        bat.update_accelerations((mosquito.x, mosquito.y))
+        bat.updateForTime(time)
         if len(list(filter(lambda x: x.suckable, viewport.collisions)))>0:
             if mosquito.suck:
                 mosquito.suck = keys_pressed[pygame.K_SLASH]
@@ -176,6 +184,10 @@ while game.enabled:
                 mosquito.unsuck = keys_down[pygame.K_SLASH]
         else:
             mosquito.unsuck = False
+        if len(list(filter(lambda x: x.killer, viewport.collisions)))>0:
+            print("ZAJEBOŁ CIE NETOPYR");
+            raise
+
         viewport.draw()
         score.showScore()
         pygame.draw.rect(screen, pygame.Color(255, 0, 0), (20, 500, 20, -mosquito.blood_percent * 2))
