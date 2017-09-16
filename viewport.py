@@ -64,18 +64,22 @@ class Viewport:
         # Check collisions, render enemies
         for enemy in self.enemies:
             enemy_position = (bX - enemy.x, bY - enemy.y)
-            if enemy.killer:
-                print("NIETOPYR KURWA", enemy_position)
+            # if enemy.killer:
+            #     print("NIETOPYR KURWA", enemy_position)
             self.screen.blit(enemy.current_image(), enemy_position)
             abs_enemy_rect = enemy.rect().move(enemy_position)
 
             # Collision detection
             if abs_enemy_rect.colliderect(abs_mosquito_rect):
                 self.collisions.append(enemy)
-        
+
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
 
-    def addEnemy(self):
+    def addEnemy(self, enemy):
+        self.enemies.append(enemy)
+        self.sortEnemies()
+
+    def sortEnemies(self):
         pass
 
     def generate_landscape(self, background_index):
