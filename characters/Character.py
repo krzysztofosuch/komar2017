@@ -2,6 +2,7 @@ import pygame
 from pprint import pprint
 
 class Character:
+    killer = False
     suckable = False
     unsuckable = False
     x = 0
