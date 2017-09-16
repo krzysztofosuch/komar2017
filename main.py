@@ -29,6 +29,10 @@ mainFont = 0
 fontTahoma = 0
 xOffset = 0
 yOffset = 0
+
+bgImage = 0
+bgSize = 0
+
 mosquito = Mosquito()
 mosquito.x = 100
 mosquito.y = 100
@@ -37,12 +41,11 @@ bat.x = -300
 bat.y = -300
 human = 0
 water = None
-bgImage = 0
 
 
 def initApp():
     """Initialize app"""
-    global screen, appAlive, clock, mainFont, bgImage, fontTahoma, human
+    global screen, appAlive, clock, mainFont, bgImage, bgSize, fontTahoma, human
     pygame.init()
     pygame.display.set_caption("Blood Frenzy")
     fontTahoma = pygame.font.SysFont('Tahoma', 16, False, False)
@@ -68,8 +71,8 @@ def initApp():
 
     human = Human(randX, randY)
     human.set_boundaries(boundariesX, boundariesY)
-    human.walk_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1_walk.pyxel', 'tmp'))
-    human.scream_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1 Scream.pyxel', 'tmp'))
+    human.walk_animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/human1/Human_w.pyxel', 'tmp'))
+    human.scream_animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/human1/Human_s.pyxel', 'tmp'))
 
     water.x = random.randrange(-bgSize[0],0)
     water.y = -bgSize[1] + 384
@@ -85,8 +88,30 @@ def create_key_set():
         pygame.K_DOWN: False,
         pygame.K_RETURN: False,
         pygame.K_SLASH: False,
-        pygame.K_GREATER: False
+        pygame.K_GREATER: False,
+        pygame.K_1: False
     }
+
+def createHuman(viewport):
+    randX = random.randrange(-bgSize[0], 0)
+    randY = -bgSize[1] + random.randrange(260, 280)
+    boundariesX = (0, bgSize[0])
+    boundariesY = (0, bgSize[1])
+
+    skin = random.randrange(1,5)
+    print(skin)
+
+    walkAnimation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
+    screamAnimation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
+
+    human = Human(randX, randY)
+    human.set_boundaries(boundariesX, boundariesY)
+    human.walk_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(walkAnimation, 'tmp'))
+    human.scream_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(screamAnimation, 'tmp'))
+
+    viewport.addEnemy(human)
+    print(viewport.enemies)
+
 
 water = Water()
 keys_pressed = create_key_set()
@@ -163,11 +188,14 @@ while game.enabled:
         else:
             mosquito.acc_y = 0
 
+        if keys_down[pygame.K_1]:
+            createHuman(viewport)
+
         human.updateForTime(time)
 
         viewport.update(mosquito.x, mosquito.y)
         mosquito.updateForTime(time)
-        print(mosquito.x, mosquito.y)
+        # print(mosquito.x, mosquito.y)
         bat.update_accelerations((mosquito.x, mosquito.y))
         bat.updateForTime(time)
         if len(list(filter(lambda x: x.suckable, viewport.collisions)))>0:
