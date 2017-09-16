@@ -6,6 +6,7 @@ from level import Level
 from menu import Menu
 from game import Game
 import sys
+from var_dump import var_dump
 # GLOBALS
 W_WIDTH = 1024
 W_HEIGHT = 600
@@ -67,6 +68,7 @@ game = Game(screen)
 menu = Menu(game)
 
 level = Level(bgImage, screen, (mosquito.x, mosquito.y))
+last_keys_pressed = create_key_set()
 while game.enabled:
     screen.fill(BLACK)
 
@@ -91,6 +93,12 @@ while game.enabled:
         keys_pressed[pygame.K_LEFT] =joystick.get_axis(0) < -0.5
         keys_pressed[pygame.K_DOWN] = joystick.get_axis(1) > 0.5
         keys_pressed[pygame.K_UP] =joystick.get_axis(1) < -0.5
+        keys_pressed[pygame.K_RETURN] = joystick.get_button(9)
+        for key, pressed in keys_pressed.items():
+            if pressed:
+                if not last_keys_pressed[key]:
+                    keys_down[key] = True
+        last_keys_pressed = dict(keys_pressed)
 
     if game.scene == Game.SCENE_MENU:
         menu.handle_keys(keys_down)
