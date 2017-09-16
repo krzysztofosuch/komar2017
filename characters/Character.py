@@ -5,9 +5,9 @@ class Character:
     acc_y = 0
     speed_x = 0
     speed_y = 0
-    acceleration = 0.01
+    acceleration = 0.02
     deceleration = 0.01
-    max_speed = 2
+    max_speed = 3
     direction = False
 
     def set_boundaries(self, x_bound, y_bound):
@@ -21,7 +21,7 @@ class Character:
             image = self.image
         if self.direction:
             image = pygame.transform.flip(image, True, False)
-        return image
+        return pygame.transform.scale2x(image)
 
 
 import math
