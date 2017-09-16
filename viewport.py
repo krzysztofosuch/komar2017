@@ -2,6 +2,7 @@ import random
 import itertools
 from characters.Camping import Camping
 from characters.Campfire import Campfire
+from characters.Hollow import Hollow
 
 
 class Viewport:
@@ -96,3 +97,10 @@ class Viewport:
             campfire.x = random.randint(-self.background_size[0], 0) - mod_x
             campfire.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
             self.landscape_elements.append(campfire)
+
+        for _ in itertools.repeat(0, 1):
+            hollow = Hollow()
+            add_x = random.randint(-5, 5)
+            hollow.x = random.choice([-1075, -2310, -3157]) - mod_x + add_x
+            hollow.y = random.randint(550 - self.background_size[1], 700 - self.background_size[1])
+            self.landscape_elements.append(hollow)
