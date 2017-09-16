@@ -54,7 +54,7 @@ class Mosquito(Character):
             self.blood_percent = max(self.blood_percent,0)
             self.update_accelerations()
 
-        print(self.x,' ', self.y)
+        # print(self.x,' ', self.y)
 
 
     def update_accelerations(self):
