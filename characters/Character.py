@@ -42,3 +42,5 @@ class Character:
 
         return pygame.transform.scale2x(image)
 
+    def updateForTime(self, time):
+        pass
