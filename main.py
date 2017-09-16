@@ -180,7 +180,8 @@ while game.enabled:
     elif game.scene == Game.SCENE_CREDITS:
         pass
     elif game.scene == Game.SCENE_GAME_OVER:
-        pass
+        image = pygame.image.load('resources/gfx/game over.jpg', 'tmp')
+        game.screen.blit(image, (0, 0))
     else:
         if keys_pressed[pygame.K_RIGHT]:
             mosquito.acc_x = 1
