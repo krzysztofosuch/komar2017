@@ -1,6 +1,6 @@
 
 class Viewport:
-    def __init__(self, background, screen, mosquito):
+    def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
         self.y = mosquito.y
         self.background = background
@@ -8,6 +8,8 @@ class Viewport:
         self.size = background.get_rect().size
         self.mosquito = mosquito
         self.mosquitoSize = self.mosquito.image.get_size()
+
+        self.enemies = enemies
 
     def update(self, x, y):
         self.x = x-(self.mosquitoSize[0]/2)
@@ -46,5 +48,6 @@ class Viewport:
 
         self.screen.blit(self.background, (bX, bY))
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
+        self.screen.blit(self.enemies.current_image(), (self.enemies.x, self.enemies.y))
 
 import itertools

@@ -2,6 +2,7 @@
 
 import pygame
 from characters.Mosquito import Mosquito
+from characters.Human import Human
 from viewport import Viewport
 from menu import Menu
 from game import Game
@@ -27,6 +28,8 @@ yOffset = 0
 mosquito = Mosquito()
 mosquito.x = 100
 mosquito.y = 100
+
+human = Human(0, 0)
 bgImage = 0
 
 
@@ -42,10 +45,16 @@ def initApp():
     screen = pygame.display.set_mode(size)
     bgImage = pygame.image.load("resources/gfx/tlo_tyl.png").convert()
     bgSize = bgImage.get_size()
-    mosquito.set_boundaries((0,bgSize[0]), (0,bgSize[1]))
+    boundariesX = (0, bgSize[0])
+    boundariesY = (0, bgSize[1])
+
+    mosquito.set_boundaries(boundariesX, boundariesY)
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     mosquito.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
-    
+
+    human.set_boundaries(boundariesX, boundariesY)
+    human.animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1_walk.pyxel', 'tmp'))
+
     screen.fill(BLACK)
     pygame.display.flip()
 
@@ -73,7 +82,7 @@ else:
 game = Game(screen)
 menu = Menu(game)
 
-viewport = Viewport(bgImage, screen, mosquito)
+viewport = Viewport(bgImage, screen, mosquito, human)
 last_keys_pressed = create_key_set()
 while game.enabled:
     screen.fill(BLACK)

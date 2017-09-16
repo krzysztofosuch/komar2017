@@ -50,7 +50,3 @@ class Mosquito(Character):
             self.blood_percent += time*self.blood_sucking_speed
             print(self.blood_percent)
 
-
-import math
-import pyxel
-import pygame
