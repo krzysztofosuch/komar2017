@@ -1,5 +1,6 @@
 import pygame
 from game import Game
+from pyxel import Pyxel
 
 
 class Menu:
@@ -9,30 +10,27 @@ class Menu:
     def __init__(self, game):
         self.game = game
         self.current = 0
-        width = game.screen.get_rect().width
-        font = pygame.font.SysFont('Tahoma', 14)
 
-        self.items = []
-        half_width = width / 2
-        position_height = 100
-
-        for name in [Menu.ITEM_START, Menu.ITEM_EXIT]:
-            image = font.render(name, 1, (255, 255, 255))
-            position_width = half_width - (image.get_width() / 2)
-            vector = (position_width, position_height)
-            self.items.append(MenuItem(name, vector, image))
-            position_height += 100
+        self.items = [
+            MenuItem(Menu.ITEM_START, Pyxel('resources/gfx/Przycisk_start.pyxel', 'tmp')),
+            MenuItem(Menu.ITEM_EXIT, Pyxel('resources/gfx/Przycisk_exit.pyxel', 'tmp'))
+        ]
 
     def render(self):
-        for item in self.items:
-            self.game.screen.blit(item.rendered, item.vector)
+        current_item = self.items[self.current]
+        position_y = 100
+        half_width = self.game.screen.get_rect().width / 2
 
-        height = (self.current + 1) * 100
-        height += 20
-        item = self.items[self.current]
-        vector_start = (item.vector[0], height)
-        vector_end = (item.vector[0] + item.rendered.get_width(), height)
-        pygame.draw.line(self.game.screen, (255, 255, 255), vector_start, vector_end, 1)
+        for item in self.items:
+            if item == current_item:
+                image = item.active()
+            else:
+                image = item.inactive()
+
+            position_y += 100
+            position_x = half_width - (image.get_width() / 2)
+
+            self.game.screen.blit(image, (position_x, position_y))
 
     def handle_keys(self, keys):
         item = self.items[self.current]
@@ -57,7 +55,12 @@ class Menu:
 
 
 class MenuItem:
-    def __init__(self, name, vector, rendered):
+    def __init__(self, name, pyxel):
         self.name = name
-        self.vector = vector
-        self.rendered = rendered
+        self.pyxel = pyxel
+
+    def active(self):
+        return self.pyxel.get_tile_image(0, 0)
+
+    def inactive(self):
+        return self.pyxel.get_tile_image(0, 1)
