@@ -36,7 +36,7 @@ class Viewport:
 
         bg_current_index = int(self.x / self.background_size[0])
 
-        for mod in [-1, 0, 1]:
+        for mod in [-2, -1, 0, 1]:
             index = bg_current_index + mod
             background_x = index * self.background_size[0] - self.x + centerX
             self.screen.blit(self.background, (background_x, bY))
