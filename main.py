@@ -123,9 +123,9 @@ while game.enabled:
         keys_pressed[pygame.K_LEFT] =joystick.get_axis(0) < -0.5
         keys_pressed[pygame.K_DOWN] = joystick.get_axis(1) > 0.5
         keys_pressed[pygame.K_UP] =joystick.get_axis(1) < -0.5
-        keys_pressed[pygame.K_RETURN] = joystick.get_button(9)
+        keys_pressed[pygame.K_RETURN] = joystick.get_button(9) or joystick.get_button(2)
         keys_pressed[pygame.K_SLASH] = joystick.get_button(7)
-        keys_pressed[pygame.K_GREATER] = joystick.get_button(6)
+        keys_pressed[pygame.K_GREATER] = joystick.get_button(6) 
         for key, pressed in keys_pressed.items():
             if pressed:
                 if not last_keys_pressed[key]:
