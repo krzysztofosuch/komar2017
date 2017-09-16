@@ -33,13 +33,20 @@ class Viewport:
             mosquitoY = centerY + (centerY - (maxMosquitoY - self.y))
             bY = -maxMosquitoY + maxY
 
+        # Background instances
+        instances = [0.0]
+
         # Render background on right side
         if self.screen_size[0] + self.x > self.background_size[0]:
-            self.screen.blit(self.background, (self.background_size[0] - self.x + centerX, bY))
+            right_edge = self.background_size[0] - self.x + centerX
+            self.screen.blit(self.background, (right_edge, bY))
+            instances.append(right_edge)
 
         # Render background on left side
         if self.x - centerX < 0:
-            self.screen.blit(self.background, (-self.background_size[0] - self.x + centerX, bY))
+            left_edge = -self.background_size[0] - self.x + centerX
+            self.screen.blit(self.background, (left_edge, bY))
+            instances.append(left_edge)
 
         # Render main background
         self.screen.blit(self.background, (bX, bY))
