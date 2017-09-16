@@ -107,7 +107,7 @@ mosquito.score = score
 
 viewport = Viewport(bgImage, screen, mosquito, [human, water, bat])
 last_keys_pressed = create_key_set()
-pygame.display.toggle_fullscreen()
+#pygame.display.toggle_fullscreen()
 while game.enabled:
     screen.fill(BLACK)
 
