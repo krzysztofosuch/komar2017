@@ -1,5 +1,7 @@
 import random
 import itertools
+
+from characters.Grill import Grill
 from characters.Water import Water
 from characters.Human import Human
 from characters.Bat import Bat
@@ -103,3 +105,9 @@ class Viewport:
             hollow.x = random.choice([-1075, -2310, -3157]) - mod_x + add_x
             hollow.y = random.randint(550 - self.background_size[1], 700 - self.background_size[1])
             self.landscape_elements.append(hollow)
+
+        for _ in itertools.repeat(0, 1):
+            grill = Grill()
+            grill.x = random.randint(-self.background_size[0], 0) - mod_x
+            grill.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
+            self.landscape_elements.append(grill)
