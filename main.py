@@ -40,6 +40,8 @@ def initApp():
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
     bgImage = pygame.image.load("resources/gfx/tlo_tyl.png").convert()
+    bgSize = bgImage.get_size()
+    mosquito.set_boundaries((0,bgSize[0]), (0,bgSize[1]))
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     screen.fill(BLACK)
     pygame.display.flip()
@@ -122,7 +124,6 @@ while game.enabled:
         level.update(mosquito.x, mosquito.y)
         level.draw()
         # screen.blit(mosquito.image, (W_WIDTH / 2, W_HEIGHT / 2))
-
     pygame.display.flip()
     clock.tick(60)
 

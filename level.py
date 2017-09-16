@@ -7,56 +7,41 @@ class Level:
         self.screen = screen
         self.size = background.get_rect().size
         self.mosquito = mosquito
-
+        self.mosquitoSize = self.mosquito.image.get_size()
 
     def update(self, x, y):
-        self.x = -x
-        self.y = -y
-
+        self.x = x-(self.mosquitoSize[0]/2)
+        self.y = y-(self.mosquitoSize[1]/2)
+        
 
 
     def draw(self):
-        maxX = -self.screen.get_size()[0]
-        maxY = -self.screen.get_size()[1]
+        maxX = self.screen.get_size()[0]
+        maxY = self.screen.get_size()[1]
         centerX = self.screen.get_size()[0]/2
         centerY = self.screen.get_size()[1]/2
-
-        # print(self.size[0] - maxX)
-
-        if(self.x > 0):
+        maxMosquitoX = self.background.get_size()[0]
+        maxMosquitoY = self.background.get_size()[1]
+        if (self.x < centerX):
+            mosquitoX = self.x
             bX = 0
-        elif(self.x < maxX):
-            bX = maxX
-        else:
-            bX = self.x
-
-        if (self.x > 0):
-            mosquitoX = centerX - self.x
-        elif(self.x < maxX):
-            mosquitoX = -centerX - self.x
-        else:
+        elif self.x < maxMosquitoX-centerX:
             mosquitoX = centerX
+            bX = -self.x+centerX
+        else:
+            mosquitoX = centerX+(centerX-(maxMosquitoX-self.x))
+            print(centerX, maxMosquitoX, self.x)
+            bX = -maxMosquitoX+maxX
 
-        if (self.y > 0):
+        if (self.y < centerY):
+            mosquitoY = self.y
             bY = 0
-            mosquitoY = -self.y
-        elif (self.y < maxY):
-            bY = maxY
-            mosquitoY = -self.y
-        else:
-            bY = self.y
+        elif self.y < maxMosquitoY-centerY:
             mosquitoY = centerY
-
-        if (self.y > 0):
-            mosquitoY = centerY - self.y
-        elif(self.y < maxY):
-            mosquitoY = -centerY - self.y
+            bY = -self.y+centerY
         else:
-            mosquitoY = centerY
-
-
-        print(mosquitoX)
-        print(self.x,', ',maxX)
+            mosquitoY = centerY+(centerY-(maxMosquitoY-self.y))
+            bY = -maxMosquitoY+maxY
 
         self.screen.blit(self.background, (bX, bY))
         self.screen.blit(self.mosquito.image, (mosquitoX, mosquitoY))
