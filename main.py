@@ -201,13 +201,13 @@ while game.enabled:
         if keys_down[pygame.K_2]:
             createPuddle(viewport)
 
-        human.updateForTime(time)
+        # human.updateForTime(time)
 
         viewport.update(mosquito.x, mosquito.y)
         mosquito.updateForTime(time)
         # print(mosquito.x, mosquito.y)
         bat.update_accelerations((mosquito.x, mosquito.y))
-        bat.updateForTime(time)
+        # bat.updateForTime(time)
         if len(list(filter(lambda x: x.suckable, viewport.collisions)))>0:
             if mosquito.suck:
                 mosquito.suck = keys_pressed[pygame.K_SLASH]
@@ -227,6 +227,7 @@ while game.enabled:
             print("ZAJEBOŁ CIE NETOPYR");
             raise
 
+        viewport.updateForTimeOnEnemies(time)
         viewport.draw()
         score.showScore()
         pygame.draw.rect(screen, pygame.Color(255, 0, 0), (20, 500, 20, -mosquito.blood_percent * 2))

@@ -111,3 +111,6 @@ class Viewport:
             grill.x = random.randint(-self.background_size[0], 0) - mod_x
             grill.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
             self.landscape_elements.append(grill)
+    def updateForTimeOnEnemies(self, time):
+        for enemy in self.enemies:
+            enemy.updateForTime(time)
