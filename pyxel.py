@@ -34,6 +34,9 @@ class Pyxel:
     def get_tile_image(self, layer, tile):
         return self.layers[layer].get_tile_image(tile)
 
+    def get_layer_image(self, layer):
+        return self.layers[layer].image
+
 
 class Layer:
     def __init__(self, file_location, index, tile_refs, tiles):

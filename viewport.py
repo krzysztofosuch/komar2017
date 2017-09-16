@@ -1,8 +1,14 @@
 from characters.Water import Water
 from characters.Human import Human
 from characters.Bat import Bat
+from characters.Camping import Camping
+from characters.Campfire import Campfire
+import random
+import itertools
+
+
 class Viewport:
-    order = [Water, Human, Bat]
+    order = [Campfire, Camping, Water, Human, Bat]
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
         self.y = mosquito.y
@@ -13,8 +19,9 @@ class Viewport:
         self.mosquito = mosquito
         self.mosquitoSize = self.mosquito.image.get_size()
         self.enemies = enemies
-        self.bg_instances = dict()
         self.collisions = []
+        self.generated_screens = []
+        self.landscape_elements = []
 
     def update(self, x, y):
         self.x = x - (self.mosquitoSize[0] / 2)
@@ -45,15 +52,26 @@ class Viewport:
             background_x = index * self.background_size[0] - self.x + centerX
             self.screen.blit(self.background, (background_x, bY))
 
+            # Generating new items on new screen
+            if index not in self.generated_screens:
+                self.generate_landscape(index)
+                self.generated_screens.append(index)
+
         mosquito_rect = self.mosquito.rect()
         abs_mosquito_rect = mosquito_rect.move(mosquitoX, mosquitoY)
         self.collisions = []
+
+        # Render landscape
+        for element in self.landscape_elements:
+            self.screen.blit(element.current_image(), (bX - element.x, bY - element.y))
 
         # Check collisions, render enemies
         for enemy in sorted(self.enemies, key=lambda x: self.order.index(x.__class__)):
             enemy_position = (bX - enemy.x, bY - enemy.y)
             self.screen.blit(enemy.current_image(), enemy_position)
             abs_enemy_rect = enemy.rect().move(enemy_position)
+
+            # Collision detection
             if abs_enemy_rect.colliderect(abs_mosquito_rect):
                 self.collisions.append(enemy)
 
@@ -62,3 +80,17 @@ class Viewport:
     def addEnemy(self, enemy):
         self.enemies.append(enemy)
 
+    def generate_landscape(self, background_index):
+        mod_x = background_index * self.background_size[0]
+
+        for _ in itertools.repeat(0, 1):
+            camping = Camping()
+            camping.x = random.randint(-self.background_size[0], 0) - mod_x
+            camping.y = 510 - self.background_size[1]
+            self.landscape_elements.append(camping)
+
+        for _ in itertools.repeat(0, 1):
+            campfire = Campfire()
+            campfire.x = random.randint(-self.background_size[0], 0) - mod_x
+            campfire.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
+            self.landscape_elements.append(campfire)
