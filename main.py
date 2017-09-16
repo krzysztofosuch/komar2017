@@ -110,7 +110,7 @@ while game.enabled:
         else:
             mosquito.acc_y = 0
         mosquito.updateForTime(time)
-        level.update(-mosquito.speed_x, -mosquito.speed_y)
+        level.update(mosquito.x, mosquito.y)
         level.draw()
         screen.blit(mosquito.image, (W_WIDTH / 2, W_HEIGHT / 2))
 

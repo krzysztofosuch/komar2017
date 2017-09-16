@@ -12,6 +12,7 @@ class Mosquito:
         #print("acc: (%s:%s)"%(self.acc_x, self.acc_y))
         self.x += self.speed_x*time
         self.y += self.speed_y*time
+        # print('<', self.x, ',', self.y, '>')
         if self.acc_x != 0:
             self.speed_x = min(self.speed_x+(self.acceleration*time*self.acc_x), self.max_speed)
         else:
