@@ -47,7 +47,7 @@ class Viewport:
             bY = -maxMosquitoY+maxY
 
         self.screen.blit(self.background, (bX, bY))
+        self.screen.blit(self.enemies.current_image(), (bX - self.enemies.x, bY - self.enemies.y))
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
-        self.screen.blit(self.enemies.current_image(), (self.enemies.x, self.enemies.y))
 
 import itertools

@@ -7,6 +7,7 @@ from viewport import Viewport
 from menu import Menu
 from game import Game
 import sys
+import random
 from var_dump import var_dump
 import pyxel
 # GLOBALS
@@ -29,13 +30,13 @@ mosquito = Mosquito()
 mosquito.x = 100
 mosquito.y = 100
 
-human = Human(0, 0)
+human = 0
 bgImage = 0
 
 
 def initApp():
     """Initialize app"""
-    global screen, appAlive, clock, mainFont, bgImage, fontTahoma
+    global screen, appAlive, clock, mainFont, bgImage, fontTahoma, human
     pygame.init()
     pygame.display.set_caption("Blood Frenzy")
     fontTahoma = pygame.font.SysFont('Tahoma', 16, False, False)
@@ -52,6 +53,10 @@ def initApp():
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     mosquito.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
 
+    randX = random.randrange(-bgSize[0],0)
+    randY = -bgSize[1] + random.randrange(260,280)
+
+    human = Human(randX, randY)
     human.set_boundaries(boundariesX, boundariesY)
     human.animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1_walk.pyxel', 'tmp'))
 
@@ -136,6 +141,9 @@ while game.enabled:
             mosquito.acc_y = 1
         else:
             mosquito.acc_y = 0
+
+        human.updateForTime(time)
+
         mosquito.updateForTime(time)
         mosquito.suck = keys_pressed[pygame.K_SLASH]
         viewport.update(mosquito.x, mosquito.y)
