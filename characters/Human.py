@@ -49,7 +49,7 @@ class Human(Character):
         # if random.randrange(0,1) > 0.5:
         self.direction = -self.direction
 
-        print('length ', self.length,', direction', self.direction)
+        # print('length ', self.length,', direction', self.direction)
 
     def setRest(self):
         self.remainingRest = random.randrange(100,1000)
