@@ -6,6 +6,7 @@ from level import Level
 from menu import Menu
 from game import Game
 import sys
+from var_dump import var_dump
 # GLOBALS
 W_WIDTH = 1024
 W_HEIGHT = 600
@@ -38,7 +39,7 @@ def initApp():
     mainFont = pygame.font.SysFont('Tahoma', 16, False, False)
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
-    bgImage = pygame.image.load("resources/gfx/background.png").convert()
+    bgImage = pygame.image.load("resources/gfx/tlo_tyl.png").convert()
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     screen.fill(BLACK)
     pygame.display.flip()
@@ -67,6 +68,7 @@ game = Game(screen)
 menu = Menu(game)
 
 level = Level(bgImage, screen, mosquito)
+last_keys_pressed = create_key_set()
 while game.enabled:
     screen.fill(BLACK)
 
@@ -91,9 +93,16 @@ while game.enabled:
         keys_pressed[pygame.K_LEFT] =joystick.get_axis(0) < -0.5
         keys_pressed[pygame.K_DOWN] = joystick.get_axis(1) > 0.5
         keys_pressed[pygame.K_UP] =joystick.get_axis(1) < -0.5
+        keys_pressed[pygame.K_RETURN] = joystick.get_button(9)
+        for key, pressed in keys_pressed.items():
+            if pressed:
+                if not last_keys_pressed[key]:
+                    keys_down[key] = True
+        last_keys_pressed = dict(keys_pressed)
 
     if game.scene == Game.SCENE_MENU:
         menu.handle_keys(keys_down)
+        menu.update(time)
         menu.render()
     else:
         if keys_pressed[pygame.K_RIGHT]:

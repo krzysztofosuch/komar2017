@@ -1,4 +1,5 @@
 import pygame
+import pyxel
 from game import Game
 
 
@@ -17,11 +18,17 @@ class Menu:
         position_height = 100
 
         for name in [Menu.ITEM_START, Menu.ITEM_EXIT]:
-            rendered = font.render(name, 1, (255, 255, 255))
-            position_width = half_width - (rendered.get_width() / 2)
+            image = font.render(name, 1, (255, 255, 255))
+            position_width = half_width - (image.get_width() / 2)
             vector = (position_width, position_height)
-            self.items.append(MenuItem(name, vector, rendered))
+            self.items.append(MenuItem(name, vector, image))
             position_height += 100
+
+        mosquito_pyxel = pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp')
+        self.mosquito = pyxel.AnimatedPyxel(mosquito_pyxel)
+
+    def update(self, time):
+        self.mosquito.update(time)
 
     def render(self):
         for item in self.items:
@@ -33,6 +40,10 @@ class Menu:
         vector_start = (item.vector[0], height)
         vector_end = (item.vector[0] + item.rendered.get_width(), height)
         pygame.draw.line(self.game.screen, (255, 255, 255), vector_start, vector_end, 1)
+
+        image = self.mosquito.current_image()
+        self.game.screen.blit(image, (self.game.width_center(image), 70))
+
 
     def handle_keys(self, keys):
         item = self.items[self.current]
