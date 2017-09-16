@@ -5,6 +5,8 @@ class Character:
     acc_y = 0
     speed_x = 0
     speed_y = 0
+    base_acceleration = 0.02
+    base_deceleration = 0.01
     acceleration = 0.02
     deceleration = 0.01
     max_speed = 3

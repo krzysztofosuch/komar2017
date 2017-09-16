@@ -4,3 +4,5 @@ __pycache__/level.cpython-36.pyc
 __pycache__/menu.cpython-36.pyc
 __pycache__/pyxel.cpython-36.pyc
 characters/__pycache__/Mosquito.cpython-36.pyc
+characters/__pycache__/Character.cpython-36.pyc
+__pycache__/viewport.cpython-36.pyc
