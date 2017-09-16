@@ -1,6 +1,8 @@
 import random
 import itertools
 
+import pygame
+
 from characters.Grill import Grill
 from characters.Water import Water
 from characters.Human import Human
@@ -13,7 +15,7 @@ from characters.RaidBall import RaidBall
 
 
 class Viewport:
-    order = [Campfire, Camping, Water, Human, Humanraider, Bat, RaidBall]
+    order = [Campfire, Camping, Grill, Hollow, Water, Human, Humanraider, Bat, RaidBall]
 
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
@@ -65,19 +67,17 @@ class Viewport:
                 self.generate_landscape(index)
                 self.generated_screens.append(index)
 
-        mosquito_rect = self.mosquito.rect()
+        mosquito_rect = self.mosquito.rect_for_collision()
         abs_mosquito_rect = mosquito_rect.move(mosquitoX, mosquitoY)
         self.collisions = []
+        pygame.draw.rect(self.screen, (255, 0, 0), abs_mosquito_rect, 1)
 
-        # Render landscape
-        for element in self.landscape_elements:
-            self.screen.blit(element.current_image(), (bX - element.x, bY - element.y))
-
-        # Check collisions, render enemies
+        # Check collisions, render enemies (or landscape)
         for enemy in sorted(self.enemies, key=lambda x: self.order.index(x.__class__)):
             enemy_position = (bX - enemy.x, bY - enemy.y)
             self.screen.blit(enemy.current_image(), enemy_position)
-            abs_enemy_rect = enemy.rect().move(enemy_position)
+            abs_enemy_rect = enemy.rect_for_collision().move(enemy_position)
+            pygame.draw.rect(self.screen, (255, 0, 0), abs_enemy_rect, 1)
 
             # Collision detection
             if abs_enemy_rect.colliderect(abs_mosquito_rect):
@@ -95,26 +95,26 @@ class Viewport:
             camping = Camping()
             camping.x = random.randint(-self.background_size[0], 0) - mod_x
             camping.y = 510 - self.background_size[1]
-            self.landscape_elements.append(camping)
+            self.enemies.append(camping)
 
         for _ in itertools.repeat(0, 1):
             campfire = Campfire()
             campfire.x = random.randint(-self.background_size[0], 0) - mod_x
             campfire.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
-            self.landscape_elements.append(campfire)
+            self.enemies.append(campfire)
 
         for _ in itertools.repeat(0, 1):
             hollow = Hollow()
             add_x = random.randint(-5, 5)
             hollow.x = random.choice([-1075, -2310, -3157]) - mod_x + add_x
             hollow.y = random.randint(550 - self.background_size[1], 700 - self.background_size[1])
-            self.landscape_elements.append(hollow)
+            self.enemies.append(hollow)
 
         for _ in itertools.repeat(0, 1):
             grill = Grill()
             grill.x = random.randint(-self.background_size[0], 0) - mod_x
             grill.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
-            self.landscape_elements.append(grill)
+            self.enemies.append(grill)
 
     def updateForTimeOnEnemies(self, time):
         for enemy in self.enemies:

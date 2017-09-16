@@ -193,8 +193,12 @@ while game.enabled:
 
     if game.scene == Game.SCENE_MENU:
         menu.handle_keys(keys_down)
-#        menu.update(time)
         menu.render()
+    elif game.scene == Game.SCENE_CREDITS:
+        pass
+    elif game.scene == Game.SCENE_GAME_OVER:
+        image = pygame.image.load('resources/gfx/game over.jpg', 'tmp')
+        game.screen.blit(image, (0, 0))
     else:
         if keys_pressed[pygame.K_RIGHT]:
             mosquito.acc_x = 1
@@ -244,7 +248,7 @@ while game.enabled:
         if not 'jebacnietopyra' in sys.argv:
             if len(list(filter(lambda x: x.killer, viewport.collisions)))>0:
                 print("ZAJEBOŁ CIE NETOPYR");
-                raise
+                game.scene = Game.SCENE_GAME_OVER
 
         viewport.updateForTimeOnEnemies(time)
         viewport.draw()
