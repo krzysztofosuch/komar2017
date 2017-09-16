@@ -8,7 +8,7 @@ from game import Game
 import sys
 # GLOBALS
 W_WIDTH = 1024
-W_HEIGHT = 1024
+W_HEIGHT = 600
 
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
@@ -41,7 +41,6 @@ def initApp():
     bgImage = pygame.image.load("resources/gfx/background.png").convert()
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
     screen.fill(BLACK)
-    screen.blit(bgImage, (0, 0))
     pygame.display.flip()
 
 
@@ -67,11 +66,11 @@ else:
 game = Game(screen)
 menu = Menu(game)
 
+level = Level(bgImage, screen, (mosquito.x, mosquito.y))
 while game.enabled:
     screen.fill(BLACK)
 
     time = clock.get_time() * TIME_MODIFIER
-    level = Level(bgImage, screen)
     keys_down = create_key_set()
 
     #    print("Frame time: %s"%time)
@@ -93,30 +92,27 @@ while game.enabled:
         keys_pressed[pygame.K_DOWN] = joystick.get_axis(1) > 0.5
         keys_pressed[pygame.K_UP] =joystick.get_axis(1) < -0.5
 
-    if keys_pressed[pygame.K_RIGHT]:
-        mosquito.acc_x = 1
-    elif keys_pressed[pygame.K_LEFT]:
-        mosquito.acc_x = -1
-    else:
-        mosquito.acc_x = 0
-
-    if keys_pressed[pygame.K_UP]:
-        mosquito.acc_y = -1
-    elif keys_pressed[pygame.K_DOWN]:
-        mosquito.acc_y = 1
-    else:
-        mosquito.acc_y = 0
-
     if game.scene == Game.SCENE_MENU:
         menu.handle_keys(keys_down)
         menu.render()
     else:
+        if keys_pressed[pygame.K_RIGHT]:
+            mosquito.acc_x = 1
+        elif keys_pressed[pygame.K_LEFT]:
+            mosquito.acc_x = -1
+        else:
+            mosquito.acc_x = 0
+
+        if keys_pressed[pygame.K_UP]:
+            mosquito.acc_y = -1
+        elif keys_pressed[pygame.K_DOWN]:
+            mosquito.acc_y = 1
+        else:
+            mosquito.acc_y = 0
         mosquito.updateForTime(time)
-        level.update(-mosquito.x, -mosquito.y)
+        level.update(-mosquito.speed_x, -mosquito.speed_y)
         level.draw()
         screen.blit(mosquito.image, (W_WIDTH / 2, W_HEIGHT / 2))
-    # InfoText = fontTahoma.render("DBG: Y: " + str(yOffset) + " X: " + str(xOffset), True, BLACK)
-    # screen.blit(InfoText, [W_WIDTH - 132, W_HEIGHT - 30])
 
     pygame.display.flip()
     clock.tick(60)
