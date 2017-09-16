@@ -1,5 +1,5 @@
 
-class Level:
+class Viewport:
     def __init__(self, background, screen, mosquito):
         self.x = mosquito.x
         self.y = mosquito.y
@@ -22,6 +22,8 @@ class Level:
         centerY = self.screen.get_size()[1]/2
         maxMosquitoX = self.background.get_size()[0]
         maxMosquitoY = self.background.get_size()[1]
+
+
         if (self.x < centerX):
             mosquitoX = self.x
             bX = 0
@@ -44,3 +46,5 @@ class Level:
 
         self.screen.blit(self.background, (bX, bY))
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
+
+import itertools
