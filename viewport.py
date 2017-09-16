@@ -1,3 +1,11 @@
+import random
+
+import itertools
+
+from characters.Tent import Tent
+from pprint import pprint
+
+
 class Viewport:
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
@@ -9,8 +17,9 @@ class Viewport:
         self.mosquito = mosquito
         self.mosquitoSize = self.mosquito.image.get_size()
         self.enemies = enemies
-        self.bg_instances = dict()
         self.collisions = []
+        self.generated_screens = []
+        self.landscape_elements = []
 
     def update(self, x, y):
         self.x = x - (self.mosquitoSize[0] / 2)
@@ -41,16 +50,34 @@ class Viewport:
             background_x = index * self.background_size[0] - self.x + centerX
             self.screen.blit(self.background, (background_x, bY))
 
+            # Generating new items on new screen
+            if index not in self.generated_screens:
+                self.generate_landscape(index)
+                self.generated_screens.append(index)
+
         mosquito_rect = self.mosquito.rect()
         abs_mosquito_rect = mosquito_rect.move(mosquitoX, mosquitoY)
         self.collisions = []
+
+        # Render landscape
+        for element in self.landscape_elements:
+            self.screen.blit(element.current_image(), (bX - element.x, bY - element.y))
 
         # Check collisions, render enemies
         for enemy in self.enemies:
             enemy_position = (bX - enemy.x, bY - enemy.y)
             self.screen.blit(enemy.current_image(), enemy_position)
             abs_enemy_rect = enemy.rect().move(enemy_position)
+
+            # Collision detection
             if abs_enemy_rect.colliderect(abs_mosquito_rect):
                 self.collisions.append(enemy)
         
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
+
+    def generate_landscape(self, background_index):
+        for _ in itertools.repeat(0, 1):
+            tent = Tent()
+            tent.x = random.randint(-self.background_size[0], 0)
+            tent.y = random.randint(150-self.background_size[1], 300 - self.background_size[1])
+            self.landscape_elements.append(tent)
