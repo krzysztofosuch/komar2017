@@ -66,7 +66,7 @@ else:
 game = Game(screen)
 menu = Menu(game)
 
-level = Level(bgImage, screen, (mosquito.x, mosquito.y))
+level = Level(bgImage, screen, mosquito)
 while game.enabled:
     screen.fill(BLACK)
 
@@ -112,7 +112,7 @@ while game.enabled:
         mosquito.updateForTime(time)
         level.update(mosquito.x, mosquito.y)
         level.draw()
-        screen.blit(mosquito.image, (W_WIDTH / 2, W_HEIGHT / 2))
+        # screen.blit(mosquito.image, (W_WIDTH / 2, W_HEIGHT / 2))
 
     pygame.display.flip()
     clock.tick(60)
