@@ -89,7 +89,7 @@ else:
 game = Game(screen)
 menu = Menu(game)
 
-viewport = Viewport(bgImage, screen, mosquito, human)
+viewport = Viewport(bgImage, screen, mosquito, [human])
 last_keys_pressed = create_key_set()
 while game.enabled:
     screen.fill(BLACK)
