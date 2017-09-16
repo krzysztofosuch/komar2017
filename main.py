@@ -8,6 +8,7 @@ from characters.Bat import Bat
 from viewport import Viewport
 from menu import Menu
 from game import Game
+from score import Score
 import sys
 import random
 from var_dump import var_dump
@@ -71,7 +72,7 @@ def initApp():
     human.scream_animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1 Scream.pyxel', 'tmp'))
 
     water.x = random.randrange(-bgSize[0],0)
-    water.y = -bgSize[1] + 383
+    water.y = -bgSize[1] + 384
     water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
     screen.fill(BLACK)
     pygame.display.flip()
@@ -101,6 +102,8 @@ else:
     joystick = None
 game = Game(screen)
 menu = Menu(game)
+score = Score(screen)
+mosquito.score = score
 
 viewport = Viewport(bgImage, screen, mosquito, [human, water, bat])
 last_keys_pressed = create_key_set()
@@ -186,7 +189,9 @@ while game.enabled:
             raise
 
         viewport.draw()
+        score.showScore()
         pygame.draw.rect(screen, pygame.Color(255, 0, 0), (20, 500, 20, -mosquito.blood_percent * 2))
+
 
     pygame.display.flip()
     clock.tick(60)
