@@ -1,9 +1,8 @@
 from characters.Character import Character
 
 class Human(Character):
+    suckable = True
     def __init__(self, x, y):
-        print(x)
-        print(y)
         self.x = x
         self.y = y
 
