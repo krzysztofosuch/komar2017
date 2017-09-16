@@ -7,6 +7,7 @@ from menu import Menu
 from game import Game
 import sys
 from var_dump import var_dump
+import pyxel
 # GLOBALS
 W_WIDTH = 1024
 W_HEIGHT = 600
@@ -43,6 +44,8 @@ def initApp():
     bgSize = bgImage.get_size()
     mosquito.set_boundaries((0,bgSize[0]), (0,bgSize[1]))
     mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
+    mosquito.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
+    
     screen.fill(BLACK)
     pygame.display.flip()
 
@@ -104,13 +107,15 @@ while game.enabled:
 
     if game.scene == Game.SCENE_MENU:
         menu.handle_keys(keys_down)
-        menu.update(time)
+#        menu.update(time)
         menu.render()
     else:
         if keys_pressed[pygame.K_RIGHT]:
             mosquito.acc_x = 1
+            mosquito.direction = True
         elif keys_pressed[pygame.K_LEFT]:
             mosquito.acc_x = -1
+            mosquito.direction = False
         else:
             mosquito.acc_x = 0
 

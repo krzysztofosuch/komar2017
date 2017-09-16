@@ -43,4 +43,4 @@ class Level:
             bY = -maxMosquitoY+maxY
 
         self.screen.blit(self.background, (bX, bY))
-        self.screen.blit(self.mosquito.image, (mosquitoX, mosquitoY))
+        self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))

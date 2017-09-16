@@ -8,6 +8,7 @@ class Mosquito:
     acceleration = 0.01
     deceleration = 0.01
     max_speed = 2
+    direction = False
     def updateForTime(self, time):
         new_x = self.x + self.speed_x*time
         if new_x > self.x_bound[0] and new_x < self.x_bound[1]:
@@ -47,9 +48,21 @@ class Mosquito:
                 self.speed_y -= self.deceleration*time
             else:
                 self.speed_y += self.deceleration*time
+        if self.animation:
+            self.animation.update(time)
 
     def set_boundaries(self, x_bound, y_bound):
         self.x_bound = x_bound
         self.y_bound = y_bound
+    def current_image(self):
+        if self.animation:
+            image = self.animation.current_image()
+        else:
+            image = self.image
+        if self.direction:
+            image = pygame.transform.flip(image, True, False)
+        return image
         
 import math
+import pyxel
+import pygame
