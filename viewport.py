@@ -54,3 +54,6 @@ class Viewport:
                 self.collisions.append(enemy)
         
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
+
+    def addEnemy(self):
+        pass

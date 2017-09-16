@@ -67,8 +67,8 @@ def initApp():
     human.scream_animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Human1 Scream.pyxel', 'tmp'))
 
     water.x = random.randrange(-bgSize[0],0)
-    water.y = -bgSize[1] + random.randrange(260,280)
-    water.image = pygame.image.load("resources/gfx/kałuża.png").convert_alpha()
+    water.y = -bgSize[1] + 383
+    water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
     screen.fill(BLACK)
     pygame.display.flip()
 
@@ -98,7 +98,7 @@ else:
 game = Game(screen)
 menu = Menu(game)
 
-viewport = Viewport(bgImage, screen, mosquito, [human, water])
+viewport = Viewport(bgImage, screen, mosquito, [water, human])
 last_keys_pressed = create_key_set()
 while game.enabled:
     screen.fill(BLACK)
