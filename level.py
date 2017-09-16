@@ -30,7 +30,6 @@ class Level:
             bX = -self.x+centerX
         else:
             mosquitoX = centerX+(centerX-(maxMosquitoX-self.x))
-            print(centerX, maxMosquitoX, self.x)
             bX = -maxMosquitoX+maxX
 
         if (self.y < centerY):
