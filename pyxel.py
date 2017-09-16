@@ -62,7 +62,7 @@ class Tile:
     def __init__(self, file_location, index):
         self.index = index
         path = os.path.join(file_location, 'tile' + str(self.index) + '.png')
-        self.image = pygame.image.load(path).convert()
+        self.image = pygame.image.load(path).convert_alpha()
 
 
 class AnimatedPyxel:
