@@ -56,7 +56,8 @@ def create_key_set():
         pygame.K_LEFT: False,
         pygame.K_UP: False,
         pygame.K_DOWN: False,
-        pygame.K_RETURN: False
+        pygame.K_RETURN: False,
+        pygame.K_SLASH: False
     }
 
 keys_pressed = create_key_set()
@@ -99,6 +100,7 @@ while game.enabled:
         keys_pressed[pygame.K_DOWN] = joystick.get_axis(1) > 0.5
         keys_pressed[pygame.K_UP] =joystick.get_axis(1) < -0.5
         keys_pressed[pygame.K_RETURN] = joystick.get_button(9)
+        keys_pressed[pygame.K_SLASH] = joystick.get_button(7)
         for key, pressed in keys_pressed.items():
             if pressed:
                 if not last_keys_pressed[key]:
@@ -126,9 +128,11 @@ while game.enabled:
         else:
             mosquito.acc_y = 0
         mosquito.updateForTime(time)
+        mosquito.suck = keys_pressed[pygame.K_SLASH]
         level.update(mosquito.x, mosquito.y)
         level.draw()
-        # screen.blit(mosquito.image, (W_WIDTH / 2, W_HEIGHT / 2))
+        pygame.draw.rect(screen, pygame.Color(255,0,0), (20,500,20,-mosquito.blood_percent*2))
+    
     pygame.display.flip()
     clock.tick(60)
 

@@ -9,6 +9,9 @@ class Mosquito:
     deceleration = 0.01
     max_speed = 2
     direction = False
+    blood_percent = 0
+    blood_sucking_speed = 0.1
+    suck = False
     def updateForTime(self, time):
         new_x = self.x + self.speed_x*time
         if new_x > self.x_bound[0] and new_x < self.x_bound[1]:
@@ -50,7 +53,9 @@ class Mosquito:
                 self.speed_y += self.deceleration*time
         if self.animation:
             self.animation.update(time)
-
+        if self.suck:
+            self.blood_percent += time*self.blood_sucking_speed
+            print(self.blood_percent)
     def set_boundaries(self, x_bound, y_bound):
         self.x_bound = x_bound
         self.y_bound = y_bound
@@ -61,7 +66,7 @@ class Mosquito:
             image = self.image
         if self.direction:
             image = pygame.transform.flip(image, True, False)
-        return image
+        return pygame.transform.scale(image, (64,64))
         
 import math
 import pyxel
