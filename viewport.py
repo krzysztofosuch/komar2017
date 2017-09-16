@@ -1,6 +1,7 @@
 import random
 import itertools
 from characters.Camping import Camping
+from characters.Campfire import Campfire
 
 
 class Viewport:
@@ -85,3 +86,9 @@ class Viewport:
             camping.x = random.randint(-self.background_size[0], 0) - mod_x
             camping.y = 510 - self.background_size[1]
             self.landscape_elements.append(camping)
+
+        for _ in itertools.repeat(0, 2):
+            campfire = Campfire()
+            campfire.x = random.randint(-self.background_size[0], 0) - mod_x
+            campfire.y = 360 - self.background_size[1]
+            self.landscape_elements.append(campfire)
