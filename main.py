@@ -40,7 +40,7 @@ bat = Bat()
 bat.x = -300
 bat.y = -300
 human = 0
-water = None
+water = 0
 
 
 def initApp():
@@ -114,6 +114,7 @@ def createHuman(viewport):
     print(viewport.enemies)
 
 def createPuddle(viewport):
+    water = Water()
     water.x = random.randrange(-bgSize[0], 0)
     water.y = -bgSize[1] + 384
     water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
