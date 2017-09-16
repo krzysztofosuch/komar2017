@@ -47,7 +47,9 @@ def initApp():
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
 
-    bgImage = pygame.image.load("resources/gfx/tlo_tyl.png").convert()
+    bgImage = pygame.image.load("resources/gfx/tlo_ost_calosc.png").convert()
+    bgImage = pygame.transform.scale2x(bgImage)
+    bgImage = pygame.transform.scale2x(bgImage)
     bgSize = bgImage.get_size()
     boundariesX = (0, bgSize[0])
     boundariesY = (0, bgSize[1])
