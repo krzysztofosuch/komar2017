@@ -89,7 +89,8 @@ def create_key_set():
         pygame.K_RETURN: False,
         pygame.K_SLASH: False,
         pygame.K_GREATER: False,
-        pygame.K_1: False
+        pygame.K_1: False,
+        pygame.K_2: False
     }
 
 def createHuman(viewport):
@@ -110,6 +111,14 @@ def createHuman(viewport):
     human.scream_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(screamAnimation, 'tmp'))
 
     viewport.addEnemy(human)
+    print(viewport.enemies)
+
+def createPuddle(viewport):
+    water.x = random.randrange(-bgSize[0], 0)
+    water.y = -bgSize[1] + 384
+    water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
+
+    viewport.addEnemy(water)
     print(viewport.enemies)
 
 
@@ -190,6 +199,9 @@ while game.enabled:
 
         if keys_down[pygame.K_1]:
             createHuman(viewport)
+
+        if keys_down[pygame.K_2]:
+            createPuddle(viewport)
 
         human.updateForTime(time)
 
