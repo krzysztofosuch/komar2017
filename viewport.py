@@ -91,8 +91,8 @@ class Viewport:
             camping.y = 510 - self.background_size[1]
             self.landscape_elements.append(camping)
 
-        for _ in itertools.repeat(0, 2):
+        for _ in itertools.repeat(0, 1):
             campfire = Campfire()
             campfire.x = random.randint(-self.background_size[0], 0) - mod_x
-            campfire.y = 360 - self.background_size[1]
+            campfire.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
             self.landscape_elements.append(campfire)
