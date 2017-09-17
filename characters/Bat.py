@@ -4,7 +4,7 @@ from characters.Character import Character
 
 class Bat(Character):
     killer = True
-    max_speed = 0.4
+    max_speed = 0.8
     def updateForTime(self, time):
         self.x = self.x + self.speed_x * time
         new_y = self.y + self.speed_y*time
