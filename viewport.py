@@ -19,7 +19,7 @@ from pyxel import AnimatedPyxel, Pyxel
 
 class Viewport:
     freeze = False
-    order = [Campfire, Camping, Grill, Hollow, Water, Human, Humanraider, GasMask, Bat, RaidBall]
+    order = [Water, Campfire, Camping, Grill, Hollow, Human, Humanraider, GasMask, Bat, RaidBall]
 
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
