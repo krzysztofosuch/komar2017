@@ -11,6 +11,7 @@ from menu import Menu, MenuItem
 from viewport import Viewport
 from game import Game
 from score import Score
+from modals import Modals
 import sys
 import random
 from var_dump import var_dump
@@ -92,7 +93,9 @@ def create_key_set():
         pygame.K_SLASH: False,
         pygame.K_GREATER: False,
         pygame.K_1: False,
-        pygame.K_2: False
+        pygame.K_2: False,
+        pygame.K_q: False,
+        pygame.K_p: False
     }
 
 def createPuddle(viewport):
@@ -174,6 +177,8 @@ while game.enabled:
         keys_pressed[pygame.K_RETURN] = joystick.get_button(9) or joystick.get_button(2)
         keys_pressed[pygame.K_SLASH] = joystick.get_button(7)
         keys_pressed[pygame.K_GREATER] = joystick.get_button(6) 
+        keys_pressed[pygame.K_q] = joystick.get_button(4)
+        keys_pressed[pygame.K_p] = joystick.get_button(5)
         for key, pressed in keys_pressed.items():
             if pressed:
                 if not last_keys_pressed[key]:
@@ -266,13 +271,16 @@ while game.enabled:
             if mosquito.hasGasMaskOn:
                 game.screen.blit(gasMaskIcon, (10, 10))
         else:
-            game.screen.blit(run_view, (0, 0))
+            modal = Modals(game.screen)
+            viewport.draw()
+            modal.renderRun()
+            # game.screen.blit(run_view, (0, 0))
             if not wasfrozen:
                 viewport.time_remaining = 2500
             else:
                 viewport.time_remaining -= time
             wasfrozen = True
-            if keys_pressed[pygame.K_SLASH] and keys_pressed[pygame.K_GREATER]:
+            if keys_pressed[pygame.K_q] and keys_pressed[pygame.K_q]:
                 viewport.freeze = False
             if viewport.time_remaining < 0:
                 print("ZAJEBOŁ CIE JOŁOP PACKOM");
