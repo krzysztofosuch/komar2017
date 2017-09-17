@@ -97,6 +97,11 @@ class Viewport:
                     self.collisions.append(enemy)
                     
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
+        if getattr(self.mosquito.suck_target, 'afterSuck', None) is not None:
+            if self.mosquito.suck_target.anger >= 75:
+                print('snake!')
+                sixSense = pygame.image.load("resources/gfx/wykrzyknik.png")
+                self.screen.blit(sixSense, (mosquitoX + 20, mosquitoY - 30))
 
     def addEnemy(self, enemy):
         self.enemies.append(enemy)
@@ -137,13 +142,15 @@ class Viewport:
             boundaries_y = (0, position_y)
 
             skin = random.randrange(1, 5)
-            walk_animation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
-            scream_animation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
 
             if 1 == random.randrange(1, 10):
                 human = Humanraider(position_x, position_y)
+                walk_animation = 'resources/gfx/humanraider/Human_w.pyxel'
+                scream_animation = 'resources/gfx/humanraider/Human_s.pyxel'
             else:
                 human = Human(position_x, position_y)
+                walk_animation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
+                scream_animation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
 
             human.set_boundaries(boundaries_x, boundaries_y)
             human.walk_animation = AnimatedPyxel(Pyxel(walk_animation, 'tmp'))
