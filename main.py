@@ -101,22 +101,7 @@ def createPuddle(viewport):
     water.y = -bgSize[1] + 384
     water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
     viewport.addEnemy(water)
-def createHumanraider(viewport):
-    randX = random.randrange(-bgSize[0], 0)
-    randY = -bgSize[1] + random.randrange(260, 280)
-    boundariesX = (0, bgSize[0])
-    boundariesY = (0, bgSize[1])
 
-    skin = random.randrange(1,5)
-
-    walkAnimation = 'resources/gfx/humanraider/Human_w.pyxel'
-    screamAnimation = 'resources/gfx/humanraider/Human_s.pyxel'
-
-    humanraider = Humanraider(randX, randY)
-    humanraider.set_boundaries(boundariesX, boundariesY)
-    humanraider.walk_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(walkAnimation, 'tmp'))
-    humanraider.scream_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(screamAnimation, 'tmp'))
-    viewport.addEnemy(humanraider)
 from characters.GasMask import GasMask  
 def placeRandomBonus(): 
     bonus = GasMask() 
