@@ -74,9 +74,9 @@ class Humanraider(Character):
             raidBall = RaidBall()
             raidBall.x = self.x
             raidBall.y = self.y
-            raidBall.speed_x = max(min(3, speed_x),-3)
-            raidBall.speed_y = max(min(3, speed_y ),-3)
-            raidBall.ttl = 50
+            raidBall.speed_x = max(min(2, speed_x),-3)
+            raidBall.speed_y = max(min(2, speed_y ),-3)
+            raidBall.ttl = 80
             raidBall.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/raid/chmura raid.pyxel', 'tmp'))
             self.cooldown = 1000
             return raidBall

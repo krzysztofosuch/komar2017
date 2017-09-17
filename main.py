@@ -6,6 +6,7 @@ from characters.Human import Human
 from characters.Humanraider import Humanraider
 from characters.Water import Water
 from characters.Bat import Bat
+from characters.RaidBall import RaidBall
 from viewport import Viewport
 from menu import Menu
 from game import Game
@@ -145,7 +146,7 @@ water = Water()
 keys_pressed = create_key_set()
 TIME_MODIFIER = 0.2
 initApp()
-bonusCounter = random.randrange(100, 2000)
+bonusCounter = random.randrange(1500, 4500)
 pygame.joystick.init()
 if pygame.joystick.get_count() and not 'no-joystick' in sys.argv:
     joystick = pygame.joystick.Joystick(0)
@@ -156,7 +157,7 @@ game = Game(screen)
 menu = Menu(game)
 score = Score(screen)
 mosquito.score = score
-
+gasMaskIcon = pygame.image.load("resources/gfx/maska gazowa.png").convert_alpha()
 viewport = Viewport(bgImage, screen, mosquito, [human, water, bat])
 last_keys_pressed = create_key_set()
 if 'fullscreen' in sys.argv:
@@ -206,7 +207,7 @@ while game.enabled:
     else:
         bonusCounter -= time
         if bonusCounter <= 0:
-            bonusCounter = random.randrange(100, 2000)
+            bonusCounter = random.randrange(1500, 4500)
             viewport.addEnemy(placeRandomBonus())
         if keys_pressed[pygame.K_RIGHT]:
             mosquito.acc_x = 1
@@ -254,14 +255,24 @@ while game.enabled:
         else:
             mosquito.unsuck = False
         if not 'jebacnietopyra' in sys.argv:
-            if len(list(filter(lambda x: x.killer, viewport.collisions)))>0:
-                print("ZAJEBOŁ CIE NETOPYR");
-                game.scene = Game.SCENE_GAME_OVER
+            for killer in filter(lambda x: x.killer, viewport.collisions):
+                if isinstance(killer, Bat):
+                    print("ZAJEBOŁ CIE NETOPYR");
+                    game.scene = Game.SCENE_GAME_OVER
+                elif isinstance(killer, RaidBall):
+                    if mosquito.hasGasMaskOn:
+                        mosquito.hasGasMaskOn = False
+                    else:
+                        print("ZAJEBOŁ CIE JOŁOP Z RAIDEM");
+                        game.scene = Game.SCENE_GAME_OVER
 
         viewport.updateForTimeOnEnemies(time)
         viewport.draw()
         score.showScore()
         pygame.draw.rect(screen, pygame.Color(255, 0, 0), (20, 500, 20, -mosquito.blood_percent * 2))
+        if mosquito.hasGasMaskOn:
+            game.screen.blit(gasMaskIcon, (10, 10))
+
 
 
     pygame.display.flip()

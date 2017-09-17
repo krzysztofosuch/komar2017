@@ -5,7 +5,7 @@ class Mosquito(Character):
     blood_sucking_speed = 0.1
     suck = False
     unsuck = False
-
+    hasGasMaskOn = False
     def updateForTime(self, time):
         self.x = self.x + self.speed_x * time
 
