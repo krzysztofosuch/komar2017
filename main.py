@@ -92,7 +92,9 @@ def create_key_set():
         pygame.K_SLASH: False,
         pygame.K_GREATER: False,
         pygame.K_1: False,
-        pygame.K_2: False
+        pygame.K_2: False,
+        pygame.K_q: False,
+        pygame.K_p: False
     }
 
 def createHuman(viewport):
@@ -194,6 +196,8 @@ while game.enabled:
         keys_pressed[pygame.K_RETURN] = joystick.get_button(9) or joystick.get_button(2)
         keys_pressed[pygame.K_SLASH] = joystick.get_button(7)
         keys_pressed[pygame.K_GREATER] = joystick.get_button(6) 
+        keys_pressed[pygame.K_q] = joystick.get_button(4)
+        keys_pressed[pygame.K_p] = joystick.get_button(5) 
         for key, pressed in keys_pressed.items():
             if pressed:
                 if not last_keys_pressed[key]:
@@ -289,7 +293,7 @@ while game.enabled:
             else:
                 viewport.time_remaining -= time
             wasfrozen = True
-            if keys_pressed[pygame.K_SLASH] and keys_pressed[pygame.K_GREATER]:
+            if keys_pressed[pygame.K_q] and keys_pressed[pygame.K_q]:
                 viewport.freeze = False
             if viewport.time_remaining < 0:
                 print("ZAJEBOŁ CIE JOŁOP PACKOM");
