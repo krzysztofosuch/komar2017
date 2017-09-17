@@ -250,15 +250,15 @@ while game.enabled:
             if mosquito.hasGasMaskOn:
                 game.screen.blit(gasMaskIcon, (10, 10))
         else:
-            modal = Modals(game.screen)
-            viewport.draw()
-            modal.updateForTime(time)
-            modal.renderRun()
-            # game.screen.blit(run_view, (0, 0))
             if not wasfrozen:
                 viewport.time_remaining = 2500
+                viewport.modal = Modals(game.screen)
             else:
                 viewport.time_remaining -= time
+            viewport.draw()
+            viewport.modal.updateForTime(time/3)
+            viewport.modal.renderRun()
+            # game.screen.blit(run_view, (0, 0))
             wasfrozen = True
             if keys_pressed[pygame.K_q] and keys_pressed[pygame.K_q]:
                 viewport.freeze = False
