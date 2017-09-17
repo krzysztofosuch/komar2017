@@ -251,10 +251,10 @@ while game.enabled:
                 game.screen.blit(gasMaskIcon, (10, 10))
         else:
             if not wasfrozen:
-                viewport.time_remaining = 2500
                 viewport.modal = Modals(game.screen)
+                viewport.modal.time_remaining = 400
             else:
-                viewport.time_remaining -= time
+                viewport.modal.time_remaining -= time
             viewport.draw()
             viewport.modal.updateForTime(time/3)
             viewport.modal.renderRun()
@@ -263,10 +263,10 @@ while game.enabled:
             if keys_pressed[pygame.K_q] and keys_pressed[pygame.K_q]:
                 viewport.freeze = False
                 viewport.enemies.remove(mosquito.suck_target)
-            if viewport.time_remaining < 0:
-                print("ZAJEBOŁ CIE JOŁOP PACKOM");
-                game.scene = Game.SCENE_GAME_OVER
-
+                viewport.modal.saved = True
+            if viewport.modal.time_remaining < 0:
+                viewport.modal.saved = False
+            
         
 
     pygame.display.flip()
