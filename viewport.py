@@ -14,6 +14,7 @@ from characters.Hollow import Hollow
 from characters.Humanraider import Humanraider
 from characters.RaidBall import RaidBall
 from characters.GasMask import GasMask
+from pyxel import AnimatedPyxel, Pyxel
 
 
 class Viewport:
@@ -127,6 +128,28 @@ class Viewport:
             grill.x = random.randint(-self.background_size[0], 0) - mod_x
             grill.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
             self.enemies.append(grill)
+
+        for _ in itertools.repeat(0, random.randint(0, 3)):
+            position_x = random.randint(-self.background_size[0], 0) - mod_x
+            position_y = random.randint(260 - self.background_size[1], 280 - self.background_size[1])
+
+            boundaries_x = (position_x - self.background_size[0], position_x + self.background_size[0])
+            boundaries_y = (0, position_y)
+
+            skin = random.randrange(1, 5)
+            walk_animation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
+            scream_animation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
+
+            if 1 == random.randrange(1, 10):
+                human = Humanraider(position_x, position_y)
+            else:
+                human = Human(position_x, position_y)
+
+            human.set_boundaries(boundaries_x, boundaries_y)
+            human.walk_animation = AnimatedPyxel(Pyxel(walk_animation, 'tmp'))
+            human.scream_animation = AnimatedPyxel(Pyxel(scream_animation, 'tmp'))
+
+            self.enemies.append(human)
 
     def updateForTimeOnEnemies(self, time):
         for enemy in self.enemies:

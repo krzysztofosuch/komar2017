@@ -9,6 +9,8 @@ class Game:
         self.scene = Game.SCENE_MENU
         self.screen = screen
         self.enabled = True
+        self.main_menu = None
+        self.restart_menu = None
 
     def width_center(self, image):
         width = self.screen.get_rect().width

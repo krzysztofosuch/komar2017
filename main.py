@@ -96,46 +96,13 @@ def create_key_set():
         pygame.K_2: False
     }
 
-def createHuman(viewport):
-    randX = random.randrange(-bgSize[0], 0)
-    randY = -bgSize[1] + random.randrange(260, 280)
-    boundariesX = (0, bgSize[0])
-    boundariesY = (0, bgSize[1])
-
-    skin = random.randrange(1,5)
-
-    walkAnimation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
-    screamAnimation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
-
-    human = Human(randX, randY)
-    human.set_boundaries(boundariesX, boundariesY)
-    human.walk_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(walkAnimation, 'tmp'))
-    human.scream_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(screamAnimation, 'tmp'))
-
-    viewport.addEnemy(human)
-
 def createPuddle(viewport):
     water = Water()
     water.x = random.randrange(-bgSize[0], 0)
     water.y = -bgSize[1] + 384
     water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
     viewport.addEnemy(water)
-def createHumanraider(viewport):
-    randX = random.randrange(-bgSize[0], 0)
-    randY = -bgSize[1] + random.randrange(260, 280)
-    boundariesX = (0, bgSize[0])
-    boundariesY = (0, bgSize[1])
 
-    skin = random.randrange(1,5)
-
-    walkAnimation = 'resources/gfx/humanraider/Human_w.pyxel'
-    screamAnimation = 'resources/gfx/humanraider/Human_s.pyxel'
-
-    humanraider = Humanraider(randX, randY)
-    humanraider.set_boundaries(boundariesX, boundariesY)
-    humanraider.walk_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(walkAnimation, 'tmp'))
-    humanraider.scream_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(screamAnimation, 'tmp'))
-    viewport.addEnemy(humanraider)
 from characters.GasMask import GasMask  
 def placeRandomBonus(): 
     bonus = GasMask() 
@@ -154,8 +121,11 @@ if pygame.joystick.get_count() and not 'no-joystick' in sys.argv:
     joystick.init()
 else:
     joystick = None
+
 game = Game(screen)
-menu = Menu(game)
+game.main_menu = Menu(game)
+game.restart_menu = Menu(game)
+
 score = Score(screen)
 mosquito.score = score
 gasMaskIcon = pygame.transform.scale(pygame.image.load("resources/gfx/maska gazowa.png").convert_alpha(), (64,64))
@@ -202,12 +172,15 @@ while game.enabled:
         last_keys_pressed = dict(keys_pressed)
 
     if game.scene == Game.SCENE_MENU:
-        menu.handle_keys(keys_down)
-        menu.render()
+        image = pygame.image.load('resources/gfx/START.png', 'tmp').convert()
+        game.screen.blit(image, (0, 0))
+        game.main_menu.handle_keys(keys_down)
+        game.main_menu.render()
     elif game.scene == Game.SCENE_CREDITS:
-        pass
+        image = pygame.image.load('resources/gfx/CREDITS.png', 'tmp').convert()
+        game.screen.blit(image, (0, 0))
     elif game.scene == Game.SCENE_GAME_OVER:
-        image = pygame.image.load('resources/gfx/game over.jpg', 'tmp')
+        image = pygame.image.load('resources/gfx/game over.png', 'tmp').convert()
         game.screen.blit(image, (0, 0))
     else:
         if not viewport.freeze:
@@ -231,13 +204,6 @@ while game.enabled:
                 mosquito.acc_y = 1
             else:
                 mosquito.acc_y = 0
-
-            if keys_down[pygame.K_1]:
-                choice = random.randrange(1,11)
-                if choice < 9:
-                    createHuman(viewport)
-                else:
-                    createHumanraider(viewport)
 
             if keys_down[pygame.K_2]:
                 createPuddle(viewport)
