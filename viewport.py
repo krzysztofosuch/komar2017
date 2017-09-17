@@ -137,13 +137,15 @@ class Viewport:
             boundaries_y = (0, position_y)
 
             skin = random.randrange(1, 5)
-            walk_animation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
-            scream_animation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
 
             if 1 == random.randrange(1, 10):
                 human = Humanraider(position_x, position_y)
+                walk_animation = 'resources/gfx/humanraider/Human_w.pyxel'
+                scream_animation = 'resources/gfx/humanraider/Human_s.pyxel'
             else:
                 human = Human(position_x, position_y)
+                walk_animation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
+                scream_animation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
 
             human.set_boundaries(boundaries_x, boundaries_y)
             human.walk_animation = AnimatedPyxel(Pyxel(walk_animation, 'tmp'))
