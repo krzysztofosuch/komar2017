@@ -43,11 +43,16 @@ bat = Bat()
 bat.x = -500
 bat.y = -300
 
+mute = 0
+
 def initApp():
     """Initialize app"""
     global screen, appAlive, clock, mainFont, bgImage, bgSize, fontTahoma, human
     pygame.init()
     pygame.display.set_caption("Blood Frenzy")
+    pygame.mixer.init(44100, -16, 2, 2048)
+    pygame.mixer.music.load('resources/sounds/buzz.mp3')
+
     fontTahoma = pygame.font.SysFont('Tahoma', 16, False, False)
     clock = pygame.time.Clock()
     mainFont = pygame.font.SysFont('Tahoma', 16, False, False)
@@ -185,6 +190,10 @@ while game.enabled:
         game.restart_menu.update(time)
         game.restart_menu.render()
     else:
+        if mute == 0:
+            pygame.mixer.music.play(-1)
+            mute =1
+
         if not viewport.freeze:
             wasfrozen = False
             bonusCounter -= time
@@ -230,6 +239,7 @@ while game.enabled:
             else:
                 mosquito.unsuck = False
             for killer in filter(lambda x: x.killer, viewport.collisions):
+                pygame.mixer.music.stop()
                 if isinstance(killer, Bat):
                     if not 'jebacnietopyra' in sys.argv:
                         print("ZAJEBOŁ CIE NETOPYR");
