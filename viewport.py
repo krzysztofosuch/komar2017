@@ -1,6 +1,5 @@
 import random
 import itertools
-
 import pygame
 
 from characters.Powerup import Powerup
@@ -157,6 +156,13 @@ class Viewport:
             human.scream_animation = AnimatedPyxel(Pyxel(scream_animation, 'tmp'))
 
             self.enemies.append(human)
+
+        for _ in itertools.repeat(0, 1):
+            water = Water()
+            water.x = random.randint(-self.background_size[0], 0) - mod_x
+            water.y = 384 - self.background_size[1]
+            self.enemies.append(water)
+
 
     def updateForTimeOnEnemies(self, time):
         for enemy in self.enemies:

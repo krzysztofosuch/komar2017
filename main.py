@@ -42,9 +42,6 @@ mosquito.y = 100
 bat = Bat()
 bat.x = -500
 bat.y = -300
-human = 0
-water = 0
-
 
 def initApp():
     """Initialize app"""
@@ -69,17 +66,7 @@ def initApp():
     mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony2.pyxel', 'tmp'))
 
     bat.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Topesz_Latajuncy.pyxel', 'tmp'))
-    randX = random.randrange(-bgSize[0],0)
-    randY = -bgSize[1] + random.randrange(260,280)
 
-    human = Human(randX, randY)
-    human.set_boundaries(boundariesX, boundariesY)
-    human.walk_animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/human1/Human_w.pyxel', 'tmp'))
-    human.scream_animation =pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/human1/Human_s.pyxel', 'tmp'))
-
-    water.x = random.randrange(-bgSize[0],0)
-    water.y = -bgSize[1] + 384
-    water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
     screen.fill(BLACK)
     pygame.display.flip()
 
@@ -98,13 +85,6 @@ def create_key_set():
         pygame.K_p: False
     }
 
-def createPuddle(viewport):
-    water = Water()
-    water.x = random.randrange(-bgSize[0], 0)
-    water.y = -bgSize[1] + 384
-    water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
-    viewport.addEnemy(water)
-
 from characters.GasMask import GasMask  
 def placeRandomBonus(): 
     bonus = GasMask() 
@@ -112,12 +92,13 @@ def placeRandomBonus():
     bonus.y = random.randrange(-bgSize[1] + 384, 0)
     print("PREZENT NA %s:%s"%(bonus.x, bonus.y))
     return bonus
-water = Water()
+
 keys_pressed = create_key_set()
 TIME_MODIFIER = 0.2
 initApp()
 bonusCounter = random.randrange(1500, 4500)
 pygame.joystick.init()
+
 if pygame.joystick.get_count() and not 'no-joystick' in sys.argv:
     joystick = pygame.joystick.Joystick(0)
     joystick.init()
@@ -142,7 +123,7 @@ score = Score(screen)
 mosquito.score = score
 
 gasMaskIcon = pygame.transform.scale(pygame.image.load("resources/gfx/maska gazowa.png").convert_alpha(), (64,64))
-viewport = Viewport(bgImage, screen, mosquito, [human, water, bat])
+viewport = Viewport(bgImage, screen, mosquito, [bat])
 last_keys_pressed = create_key_set()
 if 'fullscreen' in sys.argv:
     pygame.display.toggle_fullscreen()
@@ -187,18 +168,18 @@ while game.enabled:
         last_keys_pressed = dict(keys_pressed)
 
     if game.scene == Game.SCENE_MENU:
-        image = pygame.image.load('resources/gfx/START.png', 'tmp').convert()
+        image = pygame.image.load('resources/gfx/START.jpg', 'tmp').convert()
         game.screen.blit(image, (0, 0))
         game.main_menu.handle_keys(keys_down)
         game.main_menu.update(time)
         game.main_menu.render()
     elif game.scene == Game.SCENE_CREDITS:
-        image = pygame.image.load('resources/gfx/CREDITS.png', 'tmp').convert()
+        image = pygame.image.load('resources/gfx/CREDITS.jpg', 'tmp').convert()
         game.screen.blit(image, (0, 0))
         if keys_down[pygame.K_RETURN]:
             game.scene = Game.SCENE_MENU
     elif game.scene == Game.SCENE_GAME_OVER:
-        image = pygame.image.load('resources/gfx/game over.png', 'tmp').convert()
+        image = pygame.image.load('resources/gfx/game over.jpg', 'tmp').convert()
         game.screen.blit(image, (0, 0))
         game.restart_menu.handle_keys(keys_down)
         game.restart_menu.update(time)
@@ -225,9 +206,6 @@ while game.enabled:
                 mosquito.acc_y = 1
             else:
                 mosquito.acc_y = 0
-
-            if keys_down[pygame.K_2]:
-                createPuddle(viewport)
 
             # human.updateForTime(time)
 
