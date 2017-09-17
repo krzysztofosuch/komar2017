@@ -39,7 +39,7 @@ mosquito = Mosquito()
 mosquito.x = 100
 mosquito.y = 100
 bat = Bat()
-bat.x = -300
+bat.x = -500
 bat.y = -300
 human = 0
 water = 0
@@ -262,8 +262,10 @@ while game.enabled:
             wasfrozen = True
             if keys_pressed[pygame.K_q] and keys_pressed[pygame.K_q]:
                 viewport.freeze = False
+                viewport.enemies.remove(mosquito.suck_target)
             if viewport.time_remaining < 0:
                 print("ZAJEBOŁ CIE JOŁOP PACKOM");
+                game.scene = Game.SCENE_GAME_OVER
 
         
 
