@@ -1,4 +1,7 @@
+import os
 import pygame
+import sys
+
 from game import Game
 from pyxel import Pyxel, AnimatedPyxel
 
@@ -41,6 +44,9 @@ class Menu:
                 self.game.enabled = False
             if Menu.ITEM_CREDITS == item.name:
                 self.game.scene = Game.SCENE_CREDITS
+            if Menu.ITEM_RESTART == item.name:
+                os.system('python3 main.py ' + ' '.join(sys.argv))
+                self.game.enabled = False
 
         if self.current < 0:
             self.current = len(self.items) - 1

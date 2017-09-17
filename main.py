@@ -2,9 +2,6 @@
 
 import pygame
 from characters.Mosquito import Mosquito
-from characters.Human import Human
-from characters.Humanraider import Humanraider
-from characters.Water import Water
 from characters.Bat import Bat
 from characters.RaidBall import RaidBall
 from menu import Menu, MenuItem
@@ -184,6 +181,7 @@ while game.enabled:
         game.restart_menu.handle_keys(keys_down)
         game.restart_menu.update(time)
         game.restart_menu.render()
+        score.show_final_score()
     else:
         if not viewport.freeze:
             wasfrozen = False
