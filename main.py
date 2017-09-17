@@ -130,6 +130,7 @@ game.restart_menu = Menu(game)
 
 score = Score(screen)
 mosquito.score = score
+
 gasMaskIcon = pygame.transform.scale(pygame.image.load("resources/gfx/maska gazowa.png").convert_alpha(), (64,64))
 viewport = Viewport(bgImage, screen, mosquito, [human, water, bat])
 last_keys_pressed = create_key_set()

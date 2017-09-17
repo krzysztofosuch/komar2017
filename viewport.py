@@ -77,6 +77,11 @@ class Viewport:
         abs_mosquito_rect = mosquito_rect.move(mosquitoX, mosquitoY)
         self.collisions = []
         # pygame.draw.rect(self.screen, (255, 0, 0), abs_mosquito_rect, 1)
+        if getattr(self.mosquito.suck_target, 'afterSuck', None) is not None:
+            if self.mosquito.suck_target.anger >= 75:
+                print('snake!')
+                sixSense = pygame.image.load("resources/gfx/wykrzyknik.png")
+                self.screen.blit(sixSense, (mosquitoX - 20, mosquitoY - 20))
 
         # Check collisions, render enemies (or landscape)
         for enemy in sorted(self.enemies, key=lambda x: self.order.index(x.__class__)):

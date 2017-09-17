@@ -47,11 +47,6 @@ class Mosquito(Character):
                 if getattr(self.suck_target, 'afterSuck', None) is not None:
                     self.suck_target.afterSuck(0.5*(time)/2)
 
-                    if self.suck_target.anger >= 75:
-                        print('snake!')
-                        sixSense = pygame.image.load("resources/gfx/sixSense.png").convert()
-                        self.screen.blit(sixSense, (self.x, self.y - 20))
-
             self.update_accelerations()
         if self.unsuck:
             self.blood_percent -= time*self.blood_sucking_speed
