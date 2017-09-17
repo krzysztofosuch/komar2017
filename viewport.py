@@ -97,6 +97,11 @@ class Viewport:
                     self.collisions.append(enemy)
                     
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
+        if getattr(self.mosquito.suck_target, 'afterSuck', None) is not None:
+            if self.mosquito.suck_target.anger >= 75:
+                print('snake!')
+                sixSense = pygame.image.load("resources/gfx/wykrzyknik.png")
+                self.screen.blit(sixSense, (mosquitoX + 20, mosquitoY - 30))
 
     def addEnemy(self, enemy):
         self.enemies.append(enemy)
