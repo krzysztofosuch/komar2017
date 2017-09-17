@@ -117,7 +117,6 @@ def createPuddle(viewport):
     water.x = random.randrange(-bgSize[0], 0)
     water.y = -bgSize[1] + 384
     water.image = pygame.image.load("resources/gfx/woda.png").convert_alpha()
-
     viewport.addEnemy(water)
 def createHumanraider(viewport):
     randX = random.randrange(-bgSize[0], 0)
@@ -135,13 +134,18 @@ def createHumanraider(viewport):
     humanraider.walk_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(walkAnimation, 'tmp'))
     humanraider.scream_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(screamAnimation, 'tmp'))
     viewport.addEnemy(humanraider)
-    
-
+from characters.GasMask import GasMask  
+def placeRandomBonus(): 
+    bonus = GasMask() 
+    bonus.x = random.randrange(-bgSize[0],0)
+    bonus.y = random.randrange(-bgSize[1] + 384, 0)
+    print("PREZENT NA %s:%s"%(bonus.x, bonus.y))
+    return bonus
 water = Water()
 keys_pressed = create_key_set()
 TIME_MODIFIER = 0.2
 initApp()
-
+bonusCounter = random.randrange(100, 2000)
 pygame.joystick.init()
 if pygame.joystick.get_count() and not 'no-joystick' in sys.argv:
     joystick = pygame.joystick.Joystick(0)
@@ -200,6 +204,10 @@ while game.enabled:
         image = pygame.image.load('resources/gfx/game over.jpg', 'tmp')
         game.screen.blit(image, (0, 0))
     else:
+        bonusCounter -= time
+        if bonusCounter <= 0:
+            bonusCounter = random.randrange(100, 2000)
+            viewport.addEnemy(placeRandomBonus())
         if keys_pressed[pygame.K_RIGHT]:
             mosquito.acc_x = 1
             mosquito.direction = True

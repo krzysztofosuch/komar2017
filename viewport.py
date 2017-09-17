@@ -3,6 +3,7 @@ import itertools
 
 import pygame
 
+from characters.Powerup import Powerup
 from characters.Grill import Grill
 from characters.Water import Water
 from characters.Human import Human
@@ -12,10 +13,11 @@ from characters.Campfire import Campfire
 from characters.Hollow import Hollow
 from characters.Humanraider import Humanraider
 from characters.RaidBall import RaidBall
+from characters.GasMask import GasMask
 
 
 class Viewport:
-    order = [Campfire, Camping, Grill, Hollow, Water, Human, Humanraider, Bat, RaidBall]
+    order = [Campfire, Camping, Grill, Hollow, Water, Human, Humanraider, GasMask, Bat, RaidBall]
 
     def __init__(self, background, screen, mosquito, enemies):
         self.x = mosquito.x
@@ -81,7 +83,11 @@ class Viewport:
 
             # Collision detection
             if abs_enemy_rect.colliderect(abs_mosquito_rect):
-                self.collisions.append(enemy)
+                if isinstance(enemy, Powerup):
+                    enemy.applyToCharacter(self.mosquito) 
+                    self.enemies.remove(enemy)
+                else:
+                    self.collisions.append(enemy)
                     
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
 

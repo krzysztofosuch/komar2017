@@ -27,8 +27,8 @@ class Bat(Character):
         self.animation.update(time)
 
     def update_accelerations(self, target_position):
-        x_diff = -target_position[0]-self.x
-        y_diff = -target_position[1]-self.y
+        x_diff = -target_position[0]-self.x+20
+        y_diff = -target_position[1]-self.y+20
         multiplier = 0.25
         self.acc_x = x_diff*multiplier
         self.acc_y = y_diff*multiplier
