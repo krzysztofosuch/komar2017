@@ -274,6 +274,7 @@ while game.enabled:
         else:
             modal = Modals(game.screen)
             viewport.draw()
+            modal.updateForTime(time)
             modal.renderRun()
             # game.screen.blit(run_view, (0, 0))
             if not wasfrozen:
