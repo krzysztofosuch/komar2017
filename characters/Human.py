@@ -11,6 +11,7 @@ class Human(Character):
         self.length = 0
         self.rest = 0
         self.remainingRest = 0
+        self.lastAnger = 0
 
     def afterSuck(self, sucked_value):
        self.anger += sucked_value
@@ -23,6 +24,11 @@ class Human(Character):
             self.length = 0
             self.remainingRest = 0
             self.rest = 0
+
+            if(self.anger <= self.lastAnger):
+                self.anger -= 0.05 * time
+
+            self.lastAnger = self.anger
         else:
             if self.rest == 0:
                 self.animation = 1
@@ -39,8 +45,8 @@ class Human(Character):
                 else:
                     self.setDestination()
 
-            # if self.animation:
-            #     self.walk_animation.update(time)
+            if self.animation:
+                self.walk_animation.update(time)
 
             # self.scream_animation.update(time)
 
