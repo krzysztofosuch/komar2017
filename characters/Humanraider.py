@@ -1,14 +1,7 @@
-from characters.Character import Character
+from characters.Human import Human
 
-class Humanraider(Character):
-    suckable = True
+class Humanraider(Human):
     cooldown=1000
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.length = 0
-        self.rest = 0
-        self.remainingRest = 0
 
     def updateForTime(self, time):
         self.speed_x = 0.2
@@ -43,27 +36,6 @@ class Humanraider(Character):
         #     self.x = self.x_bound[1]
 
         # print(self.x,' ', self.y)
-    def setDestination(self):
-        self.rest = 0
-        self.length = random.randrange(0, 1000)
-
-        # if random.randrange(0,1) > 0.5:
-        self.direction = -self.direction
-
-        # print('length ', self.length,', direction', self.direction)
-
-    def setRest(self):
-        self.remainingRest = random.randrange(100,1000)
-        self.rest = 1
-
-    def current_image(self):
-        animation = self.walk_animation
-        image = animation.current_image()
-        if self.direction == 1:
-            image = pygame.transform.flip(image, True, False)
-        elif self.direction == -1:
-            image = pygame.transform.flip(image, False, False)
-        return pygame.transform.scale2x(image)
     def fire_raid(self, target_position):
         x_diff = -target_position[0]-self.x
         y_diff = -target_position[1]-self.y
@@ -74,10 +46,11 @@ class Humanraider(Character):
             raidBall = RaidBall()
             raidBall.x = self.x
             raidBall.y = self.y
-            raidBall.speed_x = max(min(2, speed_x),-3)
-            raidBall.speed_y = max(min(2, speed_y ),-3)
-            raidBall.ttl = 80
-            raidBall.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/raid/chmura raid.pyxel', 'tmp'))
+            raidBall.speed_x = max(min(1, speed_x),-1)
+            raidBall.speed_y = max(min(1, speed_y ),-1)
+            raidBall.ttl = 120
+            raidBall.image = pygame.image.load("resources/gfx/raid/raid.png").convert_alpha()
+            #raidBall.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/raid/chmura raid.pyxel', 'tmp'))
             self.cooldown = 1000
             return raidBall
         else:

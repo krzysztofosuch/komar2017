@@ -2,6 +2,8 @@ from characters.Character import Character
 
 class Human(Character):
     suckable = True
+    patience = 1
+    anger = 0
     def __init__(self, x, y):
         self.x = x
         self.y = y

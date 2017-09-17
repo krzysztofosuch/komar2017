@@ -239,13 +239,16 @@ while game.enabled:
         viewport.update(mosquito.x, mosquito.y)
         mosquito.updateForTime(time)
         bat.update_accelerations((mosquito.x, mosquito.y))
-        if len(list(filter(lambda x: x.suckable, viewport.collisions)))>0:
+        suckable_in_range =list(filter(lambda x: x.suckable, viewport.collisions))
+        if suckable_in_range:
             if mosquito.suck:
                 mosquito.suck = keys_pressed[pygame.K_SLASH]
             else:
                 mosquito.suck = keys_down[pygame.K_SLASH]
+                mosquito.suck_target = suckable_in_range[0] #suck from first suckable, whatever
         else:
             mosquito.suck = False
+            mosquito.suck_target = None
         
         if len(list(filter(lambda x: x.unsuckable, viewport.collisions)))>0:
             if mosquito.unsuck:
