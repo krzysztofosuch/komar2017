@@ -11,6 +11,7 @@ from viewport import Viewport
 from menu import Menu
 from game import Game
 from score import Score
+from modals import Modals
 import sys
 import random
 from var_dump import var_dump
@@ -230,7 +231,8 @@ while game.enabled:
                 mosquito.acc_y = 0
 
             if keys_down[pygame.K_1]:
-                if random.choice([True,False]):
+                choice = random.randrange(1,11)
+                if choice < 9:
                     createHuman(viewport)
                 else:
                     createHumanraider(viewport)
@@ -279,7 +281,10 @@ while game.enabled:
             if mosquito.hasGasMaskOn:
                 game.screen.blit(gasMaskIcon, (10, 10))
         else:
-            game.screen.blit(run_view, (0, 0))
+            modal = Modals(game.screen)
+            viewport.draw()
+            modal.renderRun()
+            # game.screen.blit(run_view, (0, 0))
             if not wasfrozen:
                 viewport.time_remaining = 2500
             else:
