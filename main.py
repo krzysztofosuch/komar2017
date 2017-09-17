@@ -163,7 +163,7 @@ last_keys_pressed = create_key_set()
 if 'fullscreen' in sys.argv:
     pygame.display.toggle_fullscreen()
 run_view = pygame.image.load("resources/gfx/runscreen.png").convert()
-blood_bg = pygame.image.load("resources/gfx/Blood_LVL_Frame_Background.png").convert_alpha()
+blood_bg = pygame.image.load("resources/gfx/Blood_LVL_Background.png").convert_alpha()
 blood_fg = pygame.image.load("resources/gfx/Blood_LVL_Frame.png").convert_alpha()
 
 pygame.mouse.set_visible(False)
