@@ -10,7 +10,8 @@ class Human(Character):
         self.length = 0
         self.rest = 0
         self.remainingRest = 0
-
+    def afterSuck(self, sucked_value):
+       self.anger += sucked_value
     def updateForTime(self, time):
         self.speed_x = 0.2
         # self.x = self.x + self.speed_x * time

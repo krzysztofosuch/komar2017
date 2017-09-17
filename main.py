@@ -157,11 +157,13 @@ game = Game(screen)
 menu = Menu(game)
 score = Score(screen)
 mosquito.score = score
-gasMaskIcon = pygame.image.load("resources/gfx/maska gazowa.png").convert_alpha()
+gasMaskIcon = pygame.transform.scale(pygame.image.load("resources/gfx/maska gazowa.png").convert_alpha(), (64,64))
 viewport = Viewport(bgImage, screen, mosquito, [human, water, bat])
 last_keys_pressed = create_key_set()
 if 'fullscreen' in sys.argv:
     pygame.display.toggle_fullscreen()
+run_view = pygame.image.load("resources/gfx/runscreen.png").convert()
+
 pygame.mouse.set_visible(False)
 while game.enabled:
     screen.fill(BLACK)
@@ -205,78 +207,90 @@ while game.enabled:
         image = pygame.image.load('resources/gfx/game over.jpg', 'tmp')
         game.screen.blit(image, (0, 0))
     else:
-        bonusCounter -= time
-        if bonusCounter <= 0:
-            bonusCounter = random.randrange(1500, 4500)
-            viewport.addEnemy(placeRandomBonus())
-        if keys_pressed[pygame.K_RIGHT]:
-            mosquito.acc_x = 1
-            mosquito.direction = True
-        elif keys_pressed[pygame.K_LEFT]:
-            mosquito.acc_x = -1
-            mosquito.direction = False
-        else:
-            mosquito.acc_x = 0
-
-        if keys_pressed[pygame.K_UP]:
-            mosquito.acc_y = -1
-        elif keys_pressed[pygame.K_DOWN]:
-            mosquito.acc_y = 1
-        else:
-            mosquito.acc_y = 0
-
-        if keys_down[pygame.K_1]:
-            if random.choice([True,False]):
-                createHuman(viewport)
+        if not viewport.freeze:
+            wasfrozen = False
+            bonusCounter -= time
+            if bonusCounter <= 0:
+                bonusCounter = random.randrange(1500, 4500)
+                viewport.addEnemy(placeRandomBonus())
+            if keys_pressed[pygame.K_RIGHT]:
+                mosquito.acc_x = 1
+                mosquito.direction = True
+            elif keys_pressed[pygame.K_LEFT]:
+                mosquito.acc_x = -1
+                mosquito.direction = False
             else:
-                createHumanraider(viewport)
+                mosquito.acc_x = 0
 
-        if keys_down[pygame.K_2]:
-            createPuddle(viewport)
-
-        # human.updateForTime(time)
-
-        viewport.update(mosquito.x, mosquito.y)
-        mosquito.updateForTime(time)
-        bat.update_accelerations((mosquito.x, mosquito.y))
-        suckable_in_range =list(filter(lambda x: x.suckable, viewport.collisions))
-        if suckable_in_range:
-            if mosquito.suck:
-                mosquito.suck = keys_pressed[pygame.K_SLASH]
+            if keys_pressed[pygame.K_UP]:
+                mosquito.acc_y = -1
+            elif keys_pressed[pygame.K_DOWN]:
+                mosquito.acc_y = 1
             else:
-                mosquito.suck = keys_down[pygame.K_SLASH]
-                mosquito.suck_target = suckable_in_range[0] #suck from first suckable, whatever
-        else:
-            mosquito.suck = False
-            mosquito.suck_target = None
-        
-        if len(list(filter(lambda x: x.unsuckable, viewport.collisions)))>0:
-            if mosquito.unsuck:
-                mosquito.unsuck = keys_pressed[pygame.K_SLASH]
+                mosquito.acc_y = 0
+
+            if keys_down[pygame.K_1]:
+                if random.choice([True,False]):
+                    createHuman(viewport)
+                else:
+                    createHumanraider(viewport)
+
+            if keys_down[pygame.K_2]:
+                createPuddle(viewport)
+
+            # human.updateForTime(time)
+
+            viewport.update(mosquito.x, mosquito.y)
+            mosquito.updateForTime(time)
+            bat.update_accelerations((mosquito.x, mosquito.y))
+            suckable_in_range =list(filter(lambda x: x.suckable, viewport.collisions))
+            if suckable_in_range:
+                if mosquito.suck:
+                    mosquito.suck = keys_pressed[pygame.K_SLASH]
+                else:
+                    mosquito.suck = keys_down[pygame.K_SLASH]
+                    mosquito.suck_target = suckable_in_range[0] #suck from first suckable, whatever
             else:
-                mosquito.unsuck = keys_down[pygame.K_SLASH]
-        else:
-            mosquito.unsuck = False
-        if not 'jebacnietopyra' in sys.argv:
+                mosquito.suck = False
+                mosquito.suck_target = None
+            if len(list(filter(lambda x: x.unsuckable, viewport.collisions)))>0:
+                if mosquito.unsuck:
+                    mosquito.unsuck = keys_pressed[pygame.K_SLASH]
+                else:
+                    mosquito.unsuck = keys_down[pygame.K_SLASH]
+            else:
+                mosquito.unsuck = False
             for killer in filter(lambda x: x.killer, viewport.collisions):
                 if isinstance(killer, Bat):
-                    print("ZAJEBOŁ CIE NETOPYR");
-                    game.scene = Game.SCENE_GAME_OVER
+                    if not 'jebacnietopyra' in sys.argv:
+                        print("ZAJEBOŁ CIE NETOPYR");
+                        game.scene = Game.SCENE_GAME_OVER
                 elif isinstance(killer, RaidBall):
                     if mosquito.hasGasMaskOn:
                         mosquito.hasGasMaskOn = False
                     else:
                         print("ZAJEBOŁ CIE JOŁOP Z RAIDEM");
                         game.scene = Game.SCENE_GAME_OVER
+            viewport.updateForTimeOnEnemies(time)
+            viewport.draw()
+            score.showScore()
+            ###TODO poładnić
+            pygame.draw.rect(screen, pygame.Color(255, 0, 0), (20, 500, 20, -mosquito.blood_percent * 2))
+            if mosquito.hasGasMaskOn:
+                game.screen.blit(gasMaskIcon, (10, 10))
+        else:
+            game.screen.blit(run_view, (0, 0))
+            if not wasfrozen:
+                viewport.time_remaining = 2500
+            else:
+                viewport.time_remaining -= time
+            wasfrozen = True
+            if keys_pressed[pygame.K_SLASH] and keys_pressed[pygame.K_GREATER]:
+                viewport.freeze = False
+            if viewport.time_remaining < 0:
+                print("ZAJEBOŁ CIE JOŁOP PACKOM");
 
-        viewport.updateForTimeOnEnemies(time)
-        viewport.draw()
-        score.showScore()
-        pygame.draw.rect(screen, pygame.Color(255, 0, 0), (20, 500, 20, -mosquito.blood_percent * 2))
-        if mosquito.hasGasMaskOn:
-            game.screen.blit(gasMaskIcon, (10, 10))
-
-
+        
 
     pygame.display.flip()
     clock.tick(60)

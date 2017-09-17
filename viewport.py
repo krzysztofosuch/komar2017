@@ -17,6 +17,7 @@ from characters.GasMask import GasMask
 
 
 class Viewport:
+    freeze = False
     order = [Campfire, Camping, Grill, Hollow, Water, Human, Humanraider, GasMask, Bat, RaidBall]
 
     def __init__(self, background, screen, mosquito, enemies):
@@ -80,8 +81,11 @@ class Viewport:
             self.screen.blit(enemy.current_image(), enemy_position)
             abs_enemy_rect = enemy.rect_for_collision().move(enemy_position)
             pygame.draw.rect(self.screen, (255, 0, 0), abs_enemy_rect, 1)
-            if isinstance(enemy, Human) or isinstance(enemy, Human):
+            if isinstance(enemy, Human):
                 pygame.draw.rect(self.screen, (255, 0, 0), pygame.Rect((enemy_position[0], enemy_position[1]), (15, enemy.anger) ))
+                if enemy.anger > 100:
+                    enemy.anger = 0
+                    self.freeze = True 
             # Collision detection
             if abs_enemy_rect.colliderect(abs_mosquito_rect):
                 if isinstance(enemy, Powerup):
