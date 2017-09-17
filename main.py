@@ -168,18 +168,18 @@ while game.enabled:
         last_keys_pressed = dict(keys_pressed)
 
     if game.scene == Game.SCENE_MENU:
-        image = pygame.image.load('resources/gfx/START.png', 'tmp').convert()
+        image = pygame.image.load('resources/gfx/START.jpg', 'tmp').convert()
         game.screen.blit(image, (0, 0))
         game.main_menu.handle_keys(keys_down)
         game.main_menu.update(time)
         game.main_menu.render()
     elif game.scene == Game.SCENE_CREDITS:
-        image = pygame.image.load('resources/gfx/CREDITS.png', 'tmp').convert()
+        image = pygame.image.load('resources/gfx/CREDITS.jpg', 'tmp').convert()
         game.screen.blit(image, (0, 0))
         if keys_down[pygame.K_RETURN]:
             game.scene = Game.SCENE_MENU
     elif game.scene == Game.SCENE_GAME_OVER:
-        image = pygame.image.load('resources/gfx/game over.png', 'tmp').convert()
+        image = pygame.image.load('resources/gfx/game over.jpg', 'tmp').convert()
         game.screen.blit(image, (0, 0))
         game.restart_menu.handle_keys(keys_down)
         game.restart_menu.update(time)

@@ -1,5 +1,6 @@
 import random
 import itertools
+import pygame
 
 from characters.Powerup import Powerup
 from characters.Grill import Grill
