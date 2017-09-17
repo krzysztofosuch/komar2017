@@ -46,6 +46,7 @@ class Mosquito(Character):
                 self.score.addPoints(1*(time)/15)
                 if getattr(self.suck_target, 'afterSuck', None) is not None:
                     self.suck_target.afterSuck(0.5*(time)/2)
+
             self.update_accelerations()
         if self.unsuck:
             self.blood_percent -= time*self.blood_sucking_speed
