@@ -140,7 +140,7 @@ class Viewport:
             walk_animation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
             scream_animation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
 
-            if 1 == random.randrange(1, 5):
+            if 1 == random.randrange(1, 10):
                 human = Humanraider(position_x, position_y)
             else:
                 human = Human(position_x, position_y)
