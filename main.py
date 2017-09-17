@@ -7,10 +7,11 @@ from characters.Humanraider import Humanraider
 from characters.Water import Water
 from characters.Bat import Bat
 from characters.RaidBall import RaidBall
-from menu import Menu
+from menu import Menu, MenuItem
 from viewport import Viewport
 from game import Game
 from score import Score
+from modals import Modals
 import sys
 import random
 from var_dump import var_dump
@@ -124,8 +125,18 @@ else:
     joystick = None
 
 game = Game(screen)
-game.main_menu = Menu(game)
-game.restart_menu = Menu(game)
+
+game.main_menu = Menu(game, [
+    MenuItem(Menu.ITEM_START, 285),
+    MenuItem(Menu.ITEM_EXIT, 415),
+    MenuItem(Menu.ITEM_CREDITS, 540)
+])
+
+game.restart_menu = Menu(game, [
+    MenuItem(Menu.ITEM_RESTART, 285),
+    MenuItem(Menu.ITEM_EXIT, 415),
+    MenuItem(Menu.ITEM_CREDITS, 540)
+])
 
 score = Score(screen)
 mosquito.score = score
@@ -167,7 +178,7 @@ while game.enabled:
         keys_pressed[pygame.K_SLASH] = joystick.get_button(7)
         keys_pressed[pygame.K_GREATER] = joystick.get_button(6) 
         keys_pressed[pygame.K_q] = joystick.get_button(4)
-        keys_pressed[pygame.K_p] = joystick.get_button(5) 
+        keys_pressed[pygame.K_p] = joystick.get_button(5)
         for key, pressed in keys_pressed.items():
             if pressed:
                 if not last_keys_pressed[key]:
@@ -178,13 +189,19 @@ while game.enabled:
         image = pygame.image.load('resources/gfx/START.png', 'tmp').convert()
         game.screen.blit(image, (0, 0))
         game.main_menu.handle_keys(keys_down)
+        game.main_menu.update(time)
         game.main_menu.render()
     elif game.scene == Game.SCENE_CREDITS:
         image = pygame.image.load('resources/gfx/CREDITS.png', 'tmp').convert()
         game.screen.blit(image, (0, 0))
+        if keys_down[pygame.K_RETURN]:
+            game.scene = Game.SCENE_MENU
     elif game.scene == Game.SCENE_GAME_OVER:
         image = pygame.image.load('resources/gfx/game over.png', 'tmp').convert()
         game.screen.blit(image, (0, 0))
+        game.restart_menu.handle_keys(keys_down)
+        game.restart_menu.update(time)
+        game.restart_menu.render()
     else:
         if not viewport.freeze:
             wasfrozen = False
@@ -254,7 +271,10 @@ while game.enabled:
             if mosquito.hasGasMaskOn:
                 game.screen.blit(gasMaskIcon, (10, 10))
         else:
-            game.screen.blit(run_view, (0, 0))
+            modal = Modals(game.screen)
+            viewport.draw()
+            modal.renderRun()
+            # game.screen.blit(run_view, (0, 0))
             if not wasfrozen:
                 viewport.time_remaining = 2500
             else:
