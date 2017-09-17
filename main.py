@@ -193,7 +193,7 @@ while game.enabled:
         game.main_menu.update(time)
         game.main_menu.render()
     elif game.scene == Game.SCENE_CREDITS:
-        image = pygame.image.load('resources/gfx/CREDITS.png', 'tmp').convert()
+        image = pygame.image.load('resources/gfx/CREDITS.jpg', 'tmp').convert()
         game.screen.blit(image, (0, 0))
         if keys_down[pygame.K_RETURN]:
             game.scene = Game.SCENE_MENU
