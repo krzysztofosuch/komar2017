@@ -181,6 +181,7 @@ while game.enabled:
         game.restart_menu.handle_keys(keys_down)
         game.restart_menu.update(time)
         game.restart_menu.render()
+        score.show_final_score()
     else:
         if not viewport.freeze:
             wasfrozen = False
