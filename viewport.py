@@ -75,16 +75,15 @@ class Viewport:
         mosquito_rect = self.mosquito.rect_for_collision()
         abs_mosquito_rect = mosquito_rect.move(mosquitoX, mosquitoY)
         self.collisions = []
-        pygame.draw.rect(self.screen, (255, 0, 0), abs_mosquito_rect, 1)
+        # pygame.draw.rect(self.screen, (255, 0, 0), abs_mosquito_rect, 1)
 
         # Check collisions, render enemies (or landscape)
         for enemy in sorted(self.enemies, key=lambda x: self.order.index(x.__class__)):
             enemy_position = (bX - enemy.x, bY - enemy.y)
             self.screen.blit(enemy.current_image(), enemy_position)
             abs_enemy_rect = enemy.rect_for_collision().move(enemy_position)
-            pygame.draw.rect(self.screen, (255, 0, 0), abs_enemy_rect, 1)
             if isinstance(enemy, Human):
-                pygame.draw.rect(self.screen, (255, 0, 0), pygame.Rect((enemy_position[0], enemy_position[1]), (15, enemy.anger) ))
+                #pygame.draw.rect(self.screen, (255, 0, 0), pygame.Rect((enemy_position[0], enemy_position[1]), (15, enemy.anger) ))
                 if enemy.anger > 100:
                     enemy.anger = 0
                     self.freeze = True 
