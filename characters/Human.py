@@ -4,36 +4,45 @@ class Human(Character):
     suckable = True
     patience = 1
     anger = 0
+
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.length = 0
         self.rest = 0
         self.remainingRest = 0
+
     def afterSuck(self, sucked_value):
        self.anger += sucked_value
+
     def updateForTime(self, time):
         self.speed_x = 0.2
         # self.x = self.x + self.speed_x * time
 
-        if self.rest == 0:
-            self.animation = 1
-            if self.length > 0:
-                self.x += time * self.speed_x * self.direction
-                self.length -= time * self.speed_x
-            else:
-                self.setRest()
+        if self.anger > 0:
+            self.length = 0
+            self.remainingRest = 0
+            self.rest = 0
+        else:
+            if self.rest == 0:
+                self.animation = 1
+                if self.length > 0:
+                    self.x += time * self.speed_x * self.direction
+                    self.length -= time * self.speed_x
+                else:
+                    self.setRest()
 
-        elif self.rest == 1:
-            self.animation = 0
-            if self.remainingRest > 0:
-                self.remainingRest -= time
-            else:
-                self.setDestination()
+            elif self.rest == 1:
+                self.animation = 0
+                if self.remainingRest > 0:
+                    self.remainingRest -= time
+                else:
+                    self.setDestination()
 
-        if self.animation:
-            self.walk_animation.update(time)
-            self.scream_animation.update(time)
+            # if self.animation:
+            #     self.walk_animation.update(time)
+
+            # self.scream_animation.update(time)
 
         # print('l:  ',self.length, ' r: ', self.rest, ' rr: ', self.remainingRest)
 
@@ -59,7 +68,21 @@ class Human(Character):
         self.rest = 1
 
     def current_image(self):
-        animation = self.walk_animation
+        if self.anger > 25 and self.anger < 50:
+            animation = self.scream_animation
+            animation.setFrame(1)
+            print(self.anger, ' ', 1)
+        elif self.anger >= 50 and self.anger < 75:
+            animation = self.scream_animation
+            animation.setFrame(2)
+            print(self.anger, ' ', 2)
+        elif self.anger >= 75:
+            animation = self.scream_animation
+            animation.setFrame(3)
+            print(self.anger, ' ', 3)
+        else:
+            animation = self.walk_animation
+
         image = animation.current_image()
         if self.direction == 1:
             image = pygame.transform.flip(image, True, False)

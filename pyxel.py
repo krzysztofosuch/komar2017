@@ -76,6 +76,9 @@ class AnimatedPyxel:
         self.time_unit_last_frame = 0
         self.speed = speed
 
+    def setFrame(self, frame):
+        self.current_frame = frame
+
     def next_frame(self):
         self.current_frame += 1
 

@@ -37,8 +37,10 @@ class Viewport:
     def update(self, x, y):
         self.x = x - (self.mosquitoSize[0] / 2)
         self.y = y - (self.mosquitoSize[1] / 2)
+
     def randomlyPlacePowerup(self):
         pass    
+
     def draw(self):
         self.randomlyPlacePowerup()
         centerX = self.screen_size[0] / 2
