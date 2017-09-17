@@ -18,4 +18,4 @@ class Modals:
     def getRect(self):
         lu = (50, 50)
 
-        return (lu, (self.screen_size[0] - 100, self.screen_size[1] - 100))
+        return (lu, (self.screen_size[0] - 80, self.screen_size[1] - 80))
