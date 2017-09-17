@@ -7,8 +7,8 @@ from characters.Humanraider import Humanraider
 from characters.Water import Water
 from characters.Bat import Bat
 from characters.RaidBall import RaidBall
+from menu import Menu, MenuItem
 from viewport import Viewport
-from menu import Menu
 from game import Game
 from score import Score
 from modals import Modals
@@ -40,7 +40,7 @@ mosquito = Mosquito()
 mosquito.x = 100
 mosquito.y = 100
 bat = Bat()
-bat.x = -300
+bat.x = -500
 bat.y = -300
 human = 0
 water = 0
@@ -125,8 +125,18 @@ else:
     joystick = None
 
 game = Game(screen)
-game.main_menu = Menu(game)
-game.restart_menu = Menu(game)
+
+game.main_menu = Menu(game, [
+    MenuItem(Menu.ITEM_START, 285),
+    MenuItem(Menu.ITEM_EXIT, 415),
+    MenuItem(Menu.ITEM_CREDITS, 540)
+])
+
+game.restart_menu = Menu(game, [
+    MenuItem(Menu.ITEM_RESTART, 285),
+    MenuItem(Menu.ITEM_EXIT, 415),
+    MenuItem(Menu.ITEM_CREDITS, 540)
+])
 
 score = Score(screen)
 mosquito.score = score
@@ -169,7 +179,7 @@ while game.enabled:
         keys_pressed[pygame.K_SLASH] = joystick.get_button(7)
         keys_pressed[pygame.K_GREATER] = joystick.get_button(6) 
         keys_pressed[pygame.K_q] = joystick.get_button(4)
-        keys_pressed[pygame.K_p] = joystick.get_button(5) 
+        keys_pressed[pygame.K_p] = joystick.get_button(5)
         for key, pressed in keys_pressed.items():
             if pressed:
                 if not last_keys_pressed[key]:
@@ -180,13 +190,19 @@ while game.enabled:
         image = pygame.image.load('resources/gfx/START.png', 'tmp').convert()
         game.screen.blit(image, (0, 0))
         game.main_menu.handle_keys(keys_down)
+        game.main_menu.update(time)
         game.main_menu.render()
     elif game.scene == Game.SCENE_CREDITS:
         image = pygame.image.load('resources/gfx/CREDITS.png', 'tmp').convert()
         game.screen.blit(image, (0, 0))
+        if keys_down[pygame.K_RETURN]:
+            game.scene = Game.SCENE_MENU
     elif game.scene == Game.SCENE_GAME_OVER:
         image = pygame.image.load('resources/gfx/game over.png', 'tmp').convert()
         game.screen.blit(image, (0, 0))
+        game.restart_menu.handle_keys(keys_down)
+        game.restart_menu.update(time)
+        game.restart_menu.render()
     else:
         if not viewport.freeze:
             wasfrozen = False
@@ -267,8 +283,10 @@ while game.enabled:
             wasfrozen = True
             if keys_pressed[pygame.K_q] and keys_pressed[pygame.K_q]:
                 viewport.freeze = False
+                viewport.enemies.remove(mosquito.suck_target)
             if viewport.time_remaining < 0:
                 print("ZAJEBOŁ CIE JOŁOP PACKOM");
+                game.scene = Game.SCENE_GAME_OVER
 
         
 

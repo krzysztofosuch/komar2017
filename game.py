@@ -15,3 +15,6 @@ class Game:
     def width_center(self, image):
         width = self.screen.get_rect().width
         return (width / 2) - (image.get_width() / 2)
+
+    def update(self, time):
+        self.main_menu.update(time)

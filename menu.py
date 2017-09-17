@@ -1,36 +1,29 @@
 import pygame
 from game import Game
-from pyxel import Pyxel
+from pyxel import Pyxel, AnimatedPyxel
 
 
 class Menu:
     ITEM_START = 'Start Game'
     ITEM_EXIT = 'Exit'
+    ITEM_CREDITS = 'Credits'
+    ITEM_RESTART = 'Restart'
 
-    def __init__(self, game):
+    def __init__(self, game, items):
         self.game = game
         self.current = 0
-
-        self.items = [
-            MenuItem(Menu.ITEM_START, Pyxel('resources/gfx/Przycisk_start.pyxel', 'tmp')),
-            MenuItem(Menu.ITEM_EXIT, Pyxel('resources/gfx/Przycisk_exit.pyxel', 'tmp'))
-        ]
+        pyxel = Pyxel('resources/gfx/Topesz_Latajuncy.pyxel', 'tmp')
+        self.pointer = AnimatedPyxel(pyxel)
+        self.items = items
 
     def render(self):
         current_item = self.items[self.current]
-        position_y = 100
-        half_width = self.game.screen.get_rect().width / 2
+        image = self.pointer.current_image()
+        self.game.screen.blit(image, (380, current_item.y))
+        self.game.screen.blit(image, (810, current_item.y))
 
-        for item in self.items:
-            if item == current_item:
-                image = item.active()
-            else:
-                image = item.inactive()
-
-            position_y += 100
-            position_x = half_width - (image.get_width() / 2)
-
-            self.game.screen.blit(image, (position_x, position_y))
+    def update(self, time):
+        self.pointer.update(time)
 
     def handle_keys(self, keys):
         item = self.items[self.current]
@@ -46,6 +39,8 @@ class Menu:
                 self.game.scene = Game.SCENE_GAME
             if Menu.ITEM_EXIT == item.name:
                 self.game.enabled = False
+            if Menu.ITEM_CREDITS == item.name:
+                self.game.scene = Game.SCENE_CREDITS
 
         if self.current < 0:
             self.current = len(self.items) - 1
@@ -55,12 +50,6 @@ class Menu:
 
 
 class MenuItem:
-    def __init__(self, name, pyxel):
+    def __init__(self, name, y):
         self.name = name
-        self.pyxel = pyxel
-
-    def active(self):
-        return self.pyxel.get_tile_image(0, 0)
-
-    def inactive(self):
-        return self.pyxel.get_tile_image(0, 1)
+        self.y = y
