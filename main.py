@@ -11,7 +11,6 @@ from score import Score
 from modals import Modals
 import sys
 import random
-from var_dump import var_dump
 import pyxel
 # GLOBALS
 W_WIDTH = 1280
