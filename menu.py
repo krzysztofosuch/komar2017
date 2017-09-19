@@ -45,8 +45,8 @@ class Menu:
             if Menu.ITEM_CREDITS == item.name:
                 self.game.scene = Game.SCENE_CREDITS
             if Menu.ITEM_RESTART == item.name:
-                os.system('python3 main.py ' + ' '.join(sys.argv))
                 self.game.enabled = False
+                raise Exception("Not implemmented")
 
         if self.current < 0:
             self.current = len(self.items) - 1

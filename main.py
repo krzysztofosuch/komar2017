@@ -263,17 +263,19 @@ while game.enabled:
                 viewport.modal.time_remaining = 400
             else:
                 viewport.modal.time_remaining -= time
-            viewport.draw()
-            viewport.modal.updateForTime(time/3)
-            viewport.modal.renderRun()
-            # game.screen.blit(run_view, (0, 0))
-            wasfrozen = True
-            if keys_pressed[pygame.K_q] and keys_pressed[pygame.K_q]:
+            if not viewport.modal.finished:
+                viewport.draw()
+                viewport.modal.updateForTime(time/3)
+                viewport.modal.renderRun()
+                # game.screen.blit(run_view, (0, 0))
+                wasfrozen = True
+                if viewport.modal.time_remaining > 0 and keys_pressed[pygame.K_q] and keys_pressed[pygame.K_p]:
+                    viewport.enemies.remove(mosquito.suck_target)
+                    viewport.modal.saved = True
+                if viewport.modal.time_remaining < 0:
+                    viewport.modal.saved = False
+            else:
                 viewport.freeze = False
-                viewport.enemies.remove(mosquito.suck_target)
-                viewport.modal.saved = True
-            if viewport.modal.time_remaining < 0:
-                viewport.modal.saved = False
             
         
 

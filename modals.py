@@ -10,7 +10,7 @@ class Modals:
         self.ass = pygame.image.load("resources/gfx/pupa/PUPA_CIEŃ_pupa.png").convert_alpha()
         self.handshadow = pygame.image.load("resources/gfx/pupa/PUPA_CIEŃ_reka cien.png").convert_alpha()
         self.fallenHand = pygame.image.load("resources/gfx/pupa/PUPA_CIEŃ_reka wypelnienie.png").convert_alpha()
-        self.hand_speed = 2
+        self.hand_speed = 6
         self.hand_y = 400
         self.hand_x = 130
         self.hand_bounds = (100, 700)
@@ -19,6 +19,10 @@ class Modals:
         self.drawShadow = True
         self.saved = None 
         self.goOn = 1000
+        self.fallen = False
+        self.finished = False
+        self.finishCountdown = False
+        self.finishTimeout = None
     def renderRun(self):
         #self.rect = pygame.draw.rect(self.screen, (0,0,0), self.getRect(), 0)
         self.screen.blit(self.ass, (60, 60))
@@ -32,6 +36,8 @@ class Modals:
                 self.drawShadow = False
                 self.hand_speed = 0
                 self.screen.blit(self.fallenHand, (self.fallOn-100, 100))
+                self.finishCountdown = True
+                self.finishTimeout = 500
                 
         # run_view = pygame.image.load("resources/gfx/runscreen.png").convert()
 
@@ -45,11 +51,14 @@ class Modals:
             self.hand_speed *= -1
         self.hand_x += self.hand_speed*time
         if self.time_remaining <= 0:
-            
             if self.saved:
                 self.fallOn = 550
             else:
                 self.fallOn = 270
+        if self.finishCountdown:
+            self.finishTimeout -= time
+        if self.finishCountdown and self.finishTimeout <= 0:
+            self.finished = True
     
             
 import pyxel
