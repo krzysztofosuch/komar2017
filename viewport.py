@@ -174,6 +174,3 @@ class Viewport:
                     ball = enemy.fire_raid((self.mosquito.x, self.mosquito.y))
                     if ball:
                         self.addEnemy(ball)
-                     
-                        
-from var_dump import var_dump
