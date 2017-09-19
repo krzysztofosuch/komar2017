@@ -95,7 +95,7 @@ def placeRandomBonus():
     return bonus
 
 def resetGame():
-    global viewport
+    global screen, viewport, score, mosquito, bat, mute
 
     score = Score(screen)
     bgImage = pygame.image.load("resources/gfx/tlo_ost_calosc.png").convert()
@@ -118,6 +118,8 @@ def resetGame():
     bat.x = -500
     bat.y = -300
     bat.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Topesz_Latajuncy.pyxel', 'tmp'))
+
+    mute = 0
 
     viewport = Viewport(bgImage, screen, mosquito, [bat])
 
