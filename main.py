@@ -91,7 +91,6 @@ def placeRandomBonus():
     bonus = GasMask() 
     bonus.x = random.randrange(-bgSize[0],0)
     bonus.y = random.randrange(-bgSize[1] + 384, 0)
-    print("PREZENT NA %s:%s"%(bonus.x, bonus.y))
     return bonus
 
 keys_pressed = create_key_set()
@@ -217,6 +216,7 @@ while game.enabled:
 
             viewport.update(mosquito.x, mosquito.y)
             mosquito.updateForTime(time)
+            bat.max_speed = 0.8+(score.score/1000) 
             bat.update_accelerations((mosquito.x, mosquito.y))
             suckable_in_range =list(filter(lambda x: x.suckable, viewport.collisions))
             if suckable_in_range:
@@ -228,13 +228,13 @@ while game.enabled:
             else:
                 mosquito.suck = False
                 mosquito.suck_target = None
-            if len(list(filter(lambda x: x.unsuckable, viewport.collisions)))>0:
-                if mosquito.unsuck:
-                    mosquito.unsuck = keys_pressed[pygame.K_SLASH]
+                if len(list(filter(lambda x: x.unsuckable, viewport.collisions)))>0:
+                    if mosquito.unsuck:
+                        mosquito.unsuck = keys_pressed[pygame.K_SLASH]
+                    else:
+                        mosquito.unsuck = keys_down[pygame.K_SLASH]
                 else:
-                    mosquito.unsuck = keys_down[pygame.K_SLASH]
-            else:
-                mosquito.unsuck = False
+                    mosquito.unsuck = False
             for killer in filter(lambda x: x.killer, viewport.collisions):
                 pygame.mixer.music.stop()
                 if isinstance(killer, Bat):
@@ -244,6 +244,7 @@ while game.enabled:
                 elif isinstance(killer, RaidBall):
                     if mosquito.hasGasMaskOn:
                         mosquito.hasGasMaskOn = False
+                        viewport.enemies.remove(killer)
                     else:
                         print("ZAJEBOŁ CIE JOŁOP Z RAIDEM");
                         game.scene = Game.SCENE_GAME_OVER
@@ -269,7 +270,8 @@ while game.enabled:
                 # game.screen.blit(run_view, (0, 0))
                 wasfrozen = True
                 if viewport.modal.time_remaining > 0 and keys_pressed[pygame.K_q] and keys_pressed[pygame.K_p]:
-                    viewport.enemies.remove(mosquito.suck_target)
+                    if mosquito.suck_target in viewport.enemies:
+                        viewport.enemies.remove(mosquito.suck_target)
                     viewport.modal.saved = True
                 if viewport.modal.time_remaining < 0:
                     viewport.modal.saved = False

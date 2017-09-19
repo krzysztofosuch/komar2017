@@ -77,15 +77,12 @@ class Human(Character):
         if self.anger > 25 and self.anger < 50:
             animation = self.scream_animation
             animation.setFrame(1)
-            print(self.anger, ' ', 1)
         elif self.anger >= 50 and self.anger < 75:
             animation = self.scream_animation
             animation.setFrame(2)
-            print(self.anger, ' ', 2)
         elif self.anger >= 75:
             animation = self.scream_animation
             animation.setFrame(3)
-            print(self.anger, ' ', 3)
         else:
             animation = self.walk_animation
 
