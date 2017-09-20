@@ -7,4 +7,3 @@ class Water(Character):
 
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('resources/gfx/woda.png')

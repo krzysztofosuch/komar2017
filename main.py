@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import pygame
 from characters.Mosquito import Mosquito
 from characters.Bat import Bat
@@ -32,6 +33,9 @@ yOffset = 0
 bgImage = 0
 bgSize = 0
 
+resourcePath = None
+tmpPath = None
+
 mosquito = Mosquito()
 mosquito.x = 100
 mosquito.y = 100
@@ -41,13 +45,22 @@ bat.y = -300
 
 mute = 0
 
+def setOSSpecificParams():
+    global resourcePath, tmpPath
+    if os.name == 'nt':
+        resourcePath = '../resources'
+        tmpPath = os.getenv('LOCALAPPDATA')+'/tmp'
+    else:
+        resourcePath = 'resources'
+        tmpPath = 'tmp'
+
 def initApp():
     """Initialize app"""
-    global screen, appAlive, clock, mainFont, bgImage, bgSize, fontTahoma, human
+    global resourcePath, tmpPath, screen, appAlive, clock, mainFont, bgImage, bgSize, fontTahoma, human
     pygame.init()
     pygame.display.set_caption("Blood Frenzy")
     pygame.mixer.init(44100, -16, 2, 2048)
-    pygame.mixer.music.load('resources/sounds/buzz.mp3')
+    pygame.mixer.music.load(resourcePath+'/sounds/buzz.mp3')
 
     fontTahoma = pygame.font.SysFont('Tahoma', 16, False, False)
     clock = pygame.time.Clock()
@@ -55,18 +68,18 @@ def initApp():
     size = (W_WIDTH, W_HEIGHT)
     screen = pygame.display.set_mode(size)
 
-    bgImage = pygame.image.load("resources/gfx/tlo_ost_calosc.png").convert()
+    bgImage = pygame.image.load(resourcePath+"/gfx/tlo_ost_calosc.png").convert()
     bgSize = bgImage.get_size()
     boundariesX = (0, bgSize[0])
     boundariesY = (0, bgSize[1])
 
     mosquito.set_boundaries(boundariesX, boundariesY)
-    mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
-    mosquito.empty_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
-    mosquito.mid_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony1.pyxel', 'tmp'))
-    mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony2.pyxel', 'tmp'))
+    mosquito.image = pygame.image.load(resourcePath+"/gfx/mosquito.png").convert_alpha()
+    mosquito.empty_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(resourcePath+'/gfx/Latanie.pyxel', tmpPath))
+    mosquito.mid_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(resourcePath+'/gfx/Latanie_napełniony1.pyxel', tmpPath))
+    mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(resourcePath+'/gfx/Latanie_napełniony2.pyxel', tmpPath))
 
-    bat.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Topesz_Latajuncy.pyxel', 'tmp'))
+    bat.animation = pyxel.AnimatedPyxel(pyxel.Pyxel(resourcePath+'/gfx/Topesz_Latajuncy.pyxel', tmpPath))
 
     screen.fill(BLACK)
     pygame.display.flip()
@@ -97,7 +110,7 @@ def resetGame():
     global screen, viewport, score, mosquito, bat, mute
 
     score = Score(screen)
-    bgImage = pygame.image.load("resources/gfx/tlo_ost_calosc.png").convert()
+    bgImage = pygame.image.load(resourcePath+"/gfx/tlo_ost_calosc.png").convert()
     bgSize = bgImage.get_size()
     boundariesX = (0, bgSize[0])
     boundariesY = (0, bgSize[1])
@@ -107,23 +120,27 @@ def resetGame():
     mosquito.y = 100
     mosquito.score = score
     mosquito.set_boundaries(boundariesX, boundariesY)
-    mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
-    mosquito.empty_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
-    mosquito.mid_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony1.pyxel', 'tmp'))
-    mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony2.pyxel', 'tmp'))
+    mosquito.image = pygame.image.load(resourcePath+"/gfx/mosquito.png").convert_alpha()
+    mosquito.empty_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(resourcePath+'/gfx/Latanie.pyxel', tmpPath))
+    mosquito.mid_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(resourcePath+'/gfx/Latanie_napełniony1.pyxel', tmpPath))
+    mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel(resourcePath+'/gfx/Latanie_napełniony2.pyxel', tmpPath))
     mosquito.suck_target = None
 
     bat = Bat()
     bat.x = -500
     bat.y = -300
-    bat.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Topesz_Latajuncy.pyxel', 'tmp'))
+    bat.animation = pyxel.AnimatedPyxel(pyxel.Pyxel(resourcePath+'/gfx/Topesz_Latajuncy.pyxel', tmpPath))
 
     mute = 0
 
     viewport = Viewport(bgImage, screen, mosquito, [bat])
+    viewport.resourcePath = resourcePath
+    viewport.tmpPath = tmpPath
+
 
 keys_pressed = create_key_set()
 TIME_MODIFIER = 0.2
+setOSSpecificParams()
 initApp()
 bonusCounter = random.randrange(1500, 4500)
 pygame.joystick.init()
@@ -151,14 +168,17 @@ game.restart_menu = Menu(game, [
 score = Score(screen)
 mosquito.score = score
 
-gasMaskIcon = pygame.transform.scale(pygame.image.load("resources/gfx/maska gazowa.png").convert_alpha(), (64,64))
+gasMaskIcon = pygame.transform.scale(pygame.image.load(resourcePath+"/gfx/maska gazowa.png").convert_alpha(), (64,64))
 viewport = Viewport(bgImage, screen, mosquito, [bat])
+viewport.resourcePath = resourcePath
+viewport.tmpPath = tmpPath
+
 last_keys_pressed = create_key_set()
 if 'fullscreen' in sys.argv:
     pygame.display.toggle_fullscreen()
-run_view = pygame.image.load("resources/gfx/runscreen.png").convert()
-blood_bg = pygame.image.load("resources/gfx/Blood_LVL_Background.png").convert_alpha()
-blood_fg = pygame.image.load("resources/gfx/Blood_LVL_Frame.png").convert_alpha()
+run_view = pygame.image.load(resourcePath+"/gfx/runscreen.png").convert()
+blood_bg = pygame.image.load(resourcePath+"/gfx/Blood_LVL_Background.png").convert_alpha()
+blood_fg = pygame.image.load(resourcePath+"/gfx/Blood_LVL_Frame.png").convert_alpha()
 
 pygame.mouse.set_visible(False)
 while game.enabled:
@@ -197,18 +217,18 @@ while game.enabled:
         last_keys_pressed = dict(keys_pressed)
 
     if game.scene == Game.SCENE_MENU:
-        image = pygame.image.load('resources/gfx/START.jpg', 'tmp').convert()
+        image = pygame.image.load(resourcePath+'/gfx/START.jpg', tmpPath).convert()
         game.screen.blit(image, (0, 0))
         game.main_menu.handle_keys(keys_down)
         game.main_menu.update(time)
         game.main_menu.render()
     elif game.scene == Game.SCENE_CREDITS:
-        image = pygame.image.load('resources/gfx/CREDITS.jpg', 'tmp').convert()
+        image = pygame.image.load(resourcePath+'/gfx/CREDITS.jpg', tmpPath).convert()
         game.screen.blit(image, (0, 0))
         if keys_down[pygame.K_RETURN]:
             game.scene = Game.SCENE_MENU
     elif game.scene == Game.SCENE_GAME_OVER:
-        image = pygame.image.load('resources/gfx/game over.jpg', 'tmp').convert()
+        image = pygame.image.load(resourcePath+'/gfx/game over.jpg', tmpPath).convert()
         game.screen.blit(image, (0, 0))
         game.restart_menu.handle_keys(keys_down)
         game.restart_menu.update(time)
@@ -292,7 +312,7 @@ while game.enabled:
                 game.screen.blit(gasMaskIcon, (10, 10))
         else:
             if not wasfrozen:
-                viewport.modal = Modals(game.screen)
+                viewport.modal = Modals(game.screen, resourcePath, tmpPath)
                 viewport.modal.time_remaining = 400
             else:
                 viewport.modal.time_remaining -= time
