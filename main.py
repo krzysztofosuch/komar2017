@@ -307,9 +307,15 @@ while game.enabled:
                         viewport.enemies.remove(mosquito.suck_target)
                     viewport.modal.saved = True
                 if viewport.modal.time_remaining < 0:
-                    viewport.modal.saved = False
+                    if not viewport.modal.saved:
+                        viewport.modal.saved = False
             else:
-                viewport.freeze = False
+                if viewport.modal.saved:
+                    viewport.freeze = False
+                    game.scene = Game.SCENE_GAME
+                    viewport.modal = None
+                else:
+                    game.scene = Game.SCENE_GAME_OVER
             
         
 

@@ -26,8 +26,8 @@ class Modals:
     def renderRun(self):
         #self.rect = pygame.draw.rect(self.screen, (0,0,0), self.getRect(), 0)
         self.screen.blit(self.ass, (60, 60))
+        self.screen.blit(pygame.transform.scale(self.mosqito.current_image(), (64, 64)), (330, 550))
         if self.drawShadow:
-            self.screen.blit(pygame.transform.scale(self.mosqito.current_image(), (64, 64)), (330, 550))
             self.screen.blit(self.handshadow, (self.hand_x, self.hand_y))
         if self.time_remaining > 0:
             pygame.draw.rect(self.screen, (255,0,0), pygame.Rect((100, 100), (self.time_remaining*2, 20)), 0)
@@ -36,8 +36,9 @@ class Modals:
                 self.drawShadow = False
                 self.hand_speed = 0
                 self.screen.blit(self.fallenHand, (self.fallOn-100, 100))
-                self.finishCountdown = True
-                self.finishTimeout = 500
+                if not self.finishCountdown:
+                    self.finishCountdown = True
+                    self.finishTimeout = 100
                 
         # run_view = pygame.image.load("resources/gfx/runscreen.png").convert()
 
@@ -52,7 +53,7 @@ class Modals:
         self.hand_x += self.hand_speed*time
         if self.time_remaining <= 0:
             if self.saved:
-                self.fallOn = 550
+                self.fallOn = 650
             else:
                 self.fallOn = 270
         if self.finishCountdown:
