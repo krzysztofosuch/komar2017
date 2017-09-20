@@ -1,6 +1,7 @@
 class Game:
     SCENE_MENU = 'Menu'
     SCENE_GAME = 'Game'
+    SCENE_RESTART = 'Restart'
     SCENE_CREDITS = 'Credits'
     SCENE_GAME_OVER = 'Game Over'
     SCENE_RUN = "Run"

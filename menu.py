@@ -45,8 +45,10 @@ class Menu:
             if Menu.ITEM_CREDITS == item.name:
                 self.game.scene = Game.SCENE_CREDITS
             if Menu.ITEM_RESTART == item.name:
-                self.game.enabled = False
-                raise Exception("Not implemmented")
+                self.game.scene = Game.SCENE_RESTART
+                #self.game.enabled = False
+                print('changed scene')
+                #raise Exception("Not implemmented")
 
         if self.current < 0:
             self.current = len(self.items) - 1

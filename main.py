@@ -93,6 +93,35 @@ def placeRandomBonus():
     bonus.y = random.randrange(-bgSize[1] + 384, 0)
     return bonus
 
+def resetGame():
+    global screen, viewport, score, mosquito, bat, mute
+
+    score = Score(screen)
+    bgImage = pygame.image.load("resources/gfx/tlo_ost_calosc.png").convert()
+    bgSize = bgImage.get_size()
+    boundariesX = (0, bgSize[0])
+    boundariesY = (0, bgSize[1])
+
+    mosquito = Mosquito()
+    mosquito.x = 100
+    mosquito.y = 100
+    mosquito.score = score
+    mosquito.set_boundaries(boundariesX, boundariesY)
+    mosquito.image = pygame.image.load("resources/gfx/mosquito.png").convert_alpha()
+    mosquito.empty_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie.pyxel', 'tmp'))
+    mosquito.mid_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony1.pyxel', 'tmp'))
+    mosquito.full_animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Latanie_napełniony2.pyxel', 'tmp'))
+    mosquito.suck_target = None
+
+    bat = Bat()
+    bat.x = -500
+    bat.y = -300
+    bat.animation = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Topesz_Latajuncy.pyxel', 'tmp'))
+
+    mute = 0
+
+    viewport = Viewport(bgImage, screen, mosquito, [bat])
+
 keys_pressed = create_key_set()
 TIME_MODIFIER = 0.2
 initApp()
@@ -185,6 +214,10 @@ while game.enabled:
         game.restart_menu.update(time)
         game.restart_menu.render()
         score.show_final_score()
+    elif game.scene == Game.SCENE_RESTART:
+        print('restart')
+        resetGame()
+        game.scene = Game.SCENE_GAME
     else:
         if mute == 0:
             pygame.mixer.music.play(-1)
