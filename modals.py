@@ -3,13 +3,15 @@ import pygame
 
 class Modals:
 
-    def __init__(self, screen):
+    def __init__(self, screen, resourcePath, tmpPath):
+        self.resourcePath = resourcePath
+        self.tmpPath = tmpPath
         self.screen = screen
         self.screen_size = screen.get_size()
-        self.mosqito = pyxel.AnimatedPyxel(pyxel.Pyxel('resources/gfx/Kłucie.pyxel', 'tmp'))
-        self.ass = pygame.image.load("resources/gfx/pupa/PUPA_CIEŃ_pupa.png").convert_alpha()
-        self.handshadow = pygame.image.load("resources/gfx/pupa/PUPA_CIEŃ_reka cien.png").convert_alpha()
-        self.fallenHand = pygame.image.load("resources/gfx/pupa/PUPA_CIEŃ_reka wypelnienie.png").convert_alpha()
+        self.mosqito = pyxel.AnimatedPyxel(pyxel.Pyxel(self.resourcePath+'/gfx/Kłucie.pyxel', self.tmpPath))
+        self.ass = pygame.image.load(self.resourcePath+"/gfx/pupa/PUPA_CIEŃ_pupa.png").convert_alpha()
+        self.handshadow = pygame.image.load(self.resourcePath+"/gfx/pupa/PUPA_CIEŃ_reka cien.png").convert_alpha()
+        self.fallenHand = pygame.image.load(self.resourcePath+"/gfx/pupa/PUPA_CIEŃ_reka wypelnienie.png").convert_alpha()
         self.hand_speed = 6
         self.hand_y = 400
         self.hand_x = 130
@@ -40,7 +42,7 @@ class Modals:
                     self.finishCountdown = True
                     self.finishTimeout = 100
                 
-        # run_view = pygame.image.load("resources/gfx/runscreen.png").convert()
+        # run_view = pygame.image.load(self.resourcePath+"/gfx/runscreen.png").convert()
 
     def getRect(self):
         lu = (50, 50)

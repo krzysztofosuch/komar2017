@@ -7,4 +7,3 @@ class Hollow(Character):
 
     def __init__(self):
         super().__init__()
-        self.image = Pyxel('resources/gfx/dziupla_woda.pyxel', 'tmp').get_layer_image(0)

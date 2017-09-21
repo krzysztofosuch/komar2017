@@ -33,6 +33,8 @@ class Viewport:
         self.collisions = []
         self.generated_screens = []
         self.landscape_elements = []
+        self.resourcePath = ''
+        self.tmpPath = ''
 
     def update(self, x, y):
         self.x = x - (self.mosquitoSize[0] / 2)
@@ -98,7 +100,7 @@ class Viewport:
         self.screen.blit(self.mosquito.current_image(), (mosquitoX, mosquitoY))
         if getattr(self.mosquito.suck_target, 'afterSuck', None) is not None:
             if self.mosquito.suck_target.anger >= 75:
-                sixSense = pygame.image.load("resources/gfx/wykrzyknik.png")
+                sixSense = pygame.image.load(self.resourcePath+"/gfx/wykrzyknik.png")
                 self.screen.blit(sixSense, (mosquitoX + 20, mosquitoY - 30))
 
     def addEnemy(self, enemy):
@@ -111,12 +113,14 @@ class Viewport:
             camping = Camping()
             camping.x = random.randint(-self.background_size[0], 0) - mod_x
             camping.y = 510 - self.background_size[1]
+            camping.image = Pyxel(self.resourcePath+'/gfx/przyczepa campingowa.pyxel', self.tmpPath).get_layer_image(0)
             self.enemies.append(camping)
 
         for _ in itertools.repeat(0, 1):
             campfire = Campfire()
             campfire.x = random.randint(-self.background_size[0], 0) - mod_x
             campfire.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
+            campfire.image = Pyxel(self.resourcePath+'/gfx/ognisko.pyxel', self.tmpPath).get_layer_image(0)
             self.enemies.append(campfire)
 
         for _ in itertools.repeat(0, 1):
@@ -124,12 +128,14 @@ class Viewport:
             add_x = random.randint(-5, 5)
             hollow.x = random.choice([-1075, -2310, -3157]) - mod_x + add_x
             hollow.y = random.randint(550 - self.background_size[1], 700 - self.background_size[1])
+            hollow.image = Pyxel(self.resourcePath+'/gfx/dziupla_woda.pyxel', self.tmpPath).get_layer_image(0)
             self.enemies.append(hollow)
 
         for _ in itertools.repeat(0, 1):
             grill = Grill()
             grill.x = random.randint(-self.background_size[0], 0) - mod_x
             grill.y = random.randint(150 - self.background_size[1], 360 - self.background_size[1])
+            grill.image = Pyxel(self.resourcePath+'/gfx/grill.pyxel', self.tmpPath).get_layer_image(0)
             self.enemies.append(grill)
 
         for _ in itertools.repeat(0, random.randint(0, 3)):
@@ -143,16 +149,16 @@ class Viewport:
 
             if 1 == random.randrange(1, 10):
                 human = Humanraider(position_x, position_y)
-                walk_animation = 'resources/gfx/humanraider/Human_w.pyxel'
-                scream_animation = 'resources/gfx/humanraider/Human_s.pyxel'
+                walk_animation = self.resourcePath+'/gfx/humanraider/Human_w.pyxel'
+                scream_animation = self.resourcePath+'/gfx/humanraider/Human_s.pyxel'
             else:
                 human = Human(position_x, position_y)
-                walk_animation = 'resources/gfx/human' + str(skin) + '/Human_w.pyxel'
-                scream_animation = 'resources/gfx/human' + str(skin) + '/Human_s.pyxel'
+                walk_animation = self.resourcePath+'/gfx/human' + str(skin) + '/Human_w.pyxel'
+                scream_animation = self.resourcePath+'/gfx/human' + str(skin) + '/Human_s.pyxel'
 
             human.set_boundaries(boundaries_x, boundaries_y)
-            human.walk_animation = AnimatedPyxel(Pyxel(walk_animation, 'tmp'))
-            human.scream_animation = AnimatedPyxel(Pyxel(scream_animation, 'tmp'))
+            human.walk_animation = AnimatedPyxel(Pyxel(walk_animation, self.tmpPath))
+            human.scream_animation = AnimatedPyxel(Pyxel(scream_animation, self.tmpPath))
 
             self.enemies.append(human)
 
@@ -160,6 +166,7 @@ class Viewport:
             water = Water()
             water.x = random.randint(-self.background_size[0], 0) - mod_x
             water.y = 384 - self.background_size[1]
+            water.image = pygame.image.load(self.resourcePath + '/gfx/woda.png')
             self.enemies.append(water)
 
 
