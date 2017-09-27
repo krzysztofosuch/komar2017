@@ -157,13 +157,13 @@ game.main_menu = Menu(game, [
     MenuItem(Menu.ITEM_START, 285),
     MenuItem(Menu.ITEM_EXIT, 415),
     MenuItem(Menu.ITEM_CREDITS, 540)
-])
+], resourcePath, tmpPath)
 
 game.restart_menu = Menu(game, [
     MenuItem(Menu.ITEM_RESTART, 285),
     MenuItem(Menu.ITEM_EXIT, 415),
     MenuItem(Menu.ITEM_CREDITS, 540)
-])
+], resourcePath, tmpPath)
 
 score = Score(screen)
 mosquito.score = score
