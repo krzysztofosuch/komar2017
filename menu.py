@@ -12,10 +12,10 @@ class Menu:
     ITEM_CREDITS = 'Credits'
     ITEM_RESTART = 'Restart'
 
-    def __init__(self, game, items):
+    def __init__(self, game, items, resourcePath, tmpPath):
         self.game = game
         self.current = 0
-        pyxel = Pyxel('resources/gfx/Topesz_Latajuncy.pyxel', 'tmp')
+        pyxel = Pyxel(resourcePath+'/gfx/Topesz_Latajuncy.pyxel', tmpPath)
         self.pointer = AnimatedPyxel(pyxel)
         self.items = items
 
